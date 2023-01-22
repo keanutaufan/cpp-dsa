@@ -79,7 +79,7 @@ an `.ipp` file as the implementation file.
 ### Node
 
 Because the queue will be implemented using a linked list, the queue will need
-to have some kind of node with link to store the data and link to the next node.
+some kind of node with link to store the data and link to the next node.
 The node will be implemented as a template struct, which will allow the user to
 use the deque with any data type. The node itself will be defined as a private
 member within the deque class to prevent the user from accessing the node directly.

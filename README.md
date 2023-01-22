@@ -16,6 +16,7 @@ so more people can learn from my journey.
 
 - [Stack](DataStructure/Stack)
 - [Queue](DataStructure/Queue)
+- [Deque](DataStructure/Deque)
 
 more to come...
 

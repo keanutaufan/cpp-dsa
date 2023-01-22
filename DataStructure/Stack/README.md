@@ -68,7 +68,7 @@ The class will keep track of the top of the stack and the size of the stack.
 
 Because C++ template classes and methods can not be implemented in separate
 `.cpp` files, the implementation of the stack will either be in the header
-file itself or separate implementation in afile that will be included in
+file itself or in a separate implementation file that will be included in
 the header file. This repository will use the latter approach, using an
 `.ipp` file as the implementation file.
 

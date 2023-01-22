@@ -12,6 +12,11 @@ so more people can learn from my journey.
 
 ## Contents
 
+### Data Structures
+
+- [Stack](DataStructure/Stack)
+- [Queue](DataStructure/Queue)
+
 more to come...
 
 ## Important Notice

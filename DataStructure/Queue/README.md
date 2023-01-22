@@ -81,8 +81,8 @@ an `.ipp` file as the implementation file.
 Because the queue will be implemented using a linked list, the queue will need
 to have some kind of node with link to store the data and link to the next node.
 The node will be implemented as a template struct, which will allow the user to
-use the stack with any data type. The node itself will be defined as a private
-member within the stack class to prevent the user from accessing the node directly.
+use the deque with any data type. The node itself will be defined as a private
+member within the deque class to prevent the user from accessing the node directly.
 
 ```cpp
 template <typename T>
@@ -94,8 +94,8 @@ struct QueueContainer {
 
 ### Class Definition
 
-The stack class will be defined as a template class, which will allow the user
-to use the stack with any data type. The class will have the following private
+The deque class will be defined as a template class, which will allow the user
+to use the deque with any data type. The class will have the following private
 members:
 - `head` - A pointer to the front of the queue.
 - `tail` - A pointer to the back of the queue.

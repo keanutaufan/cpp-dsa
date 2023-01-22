@@ -71,7 +71,7 @@ decremented every time an element is removed from the queue.
 
 The queue will be implemented as a template class, which means that the queue
 can store elements of any type. Because C++ template classes and methods can not
-be implemented in separate `.cpp` files, the implementation of the stack will
+be implemented in separate `.cpp` files, the implementation of the queue will
 either be in the header file itself or separate implementation file that will be
 included in the header file. This repository will use the latter approach, using
 an `.ipp` file as the implementation file.

@@ -253,6 +253,6 @@ according to your needs.
 
 ## References
 
-- [Stack (abstract data type)](https://en.wikipedia.org/wiki/Stack_(abstract_data_type))
-- [Stack C++ Reference](https://en.cppreference.com/w/cpp/container/stack)
-- [Stack implementation using linked list](https://www.geeksforgeeks.org/stack-data-structure-introduction-program/)
+- [Stack (abstract data type) - Wikipedia](https://en.wikipedia.org/wiki/Stack_(abstract_data_type))
+- [Stack - C++ Reference](https://en.cppreference.com/w/cpp/container/stack)
+- [Stack implementation using linked list - GeeksforGeeks](https://www.geeksforgeeks.org/stack-data-structure-introduction-program/)

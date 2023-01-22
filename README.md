@@ -21,7 +21,7 @@ necessarily the most efficient, nor are they guaranteed to be bug-free.
 After all, this repository is intended to serve as a reference and learning
 resource rather than a production-ready library for large-scale applications.
 If you are planning to do something serious, I recommend using C++
-STL or a well-maintained library like [Boost](http://www.boost.org/). 
+STL or a well-maintained library like [Boost](https://github.com/boostorg/boost). 
 Should you wish to use this code, please do so at your own risk.
 
 ## Contributing

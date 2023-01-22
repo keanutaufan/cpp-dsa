@@ -1,0 +1,22 @@
+# Dependency
+*.d
+
+# Object files
+*.obj
+*.o
+*.elf
+
+# Executables
+*.exe
+*.out
+*.app
+
+# IDE Configuration
+.idea/
+.vscode/
+.vs/
+
+# Temporary Files and Folders
+temp/
+temp_*/
+*.temp

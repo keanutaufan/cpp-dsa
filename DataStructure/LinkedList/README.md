@@ -161,10 +161,10 @@ This repository will implement the linked list as a doubly linked list,
 as it is more complex and gives more insight into the inner workings of a linked
 list to the reader. The doubly linked list will be implemented as a template class,
 which means that it can store elements of any type. Because C++ template classes
-and methods can not be implemented in separate `.cpp` files, the implementation of
-the programmer will have to choose to implement the methods either in the header
-file itself or separate implementation file that will be included in the header
-file. This repository will use the latter approach, using an `.ipp` file as the
+and methods can not be implemented in separate `.cpp` files,  the programmer will
+have to choose to implement the methods either in the header file itself or
+in separate implementation file that will be included in the header file. This
+repository will use the latter approach, using an `.ipp` file as the
 implementation file.
 
 ### Node

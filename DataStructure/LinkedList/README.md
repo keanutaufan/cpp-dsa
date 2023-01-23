@@ -127,7 +127,7 @@ previous node. This allows us to traverse the list in both directions without
 storing the link to the previous node.
 
 <div align="center">
-    <img src="img/xor-linked-list.svg" width="600" height="300" />
+    <img src="img/xor-linked-list.svg" width="800" height="300" />
 </div>
 
 The XOR linked list is more efficient than the doubly linked list in terms of

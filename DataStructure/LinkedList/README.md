@@ -169,8 +169,8 @@ implementation file.
 
 ### Node
 
-The node class is the building block of the linked list. It contains the data
-and the link to the next node in the list. The node class will be implemented as a
+The linked list node is the building block of the linked list. It contains the data
+and the link to the next node in the list. The node will be implemented as a
 template struct, which means that it can store elements of any type. The node struct
 itself will be defined as a private member of the linked list class to prevent
 direct access to the node. The node struct will be defined as follows:

@@ -44,19 +44,19 @@ in terms of the number of operations, but in real-world applications, the
 actual performance is usually more important.
 
 A code which generates a random number may have a time complexity of $O(1)$,
-but the actual performance may be much worse than that. The reason is that
-generating a random number is not a simple operation. It involves a lot of
-computation, and the actual performance may be much worse than what you
-expect. Both `idiv` and `imul` instructions are $O(1)$, but `idiv` is
-generally way more expensive and requires more clock cycles than `imul`.
-If an algorithm involves, say, a million `idiv` instructions, it may take
-longer to run than an algorithm that involves a million `imul` instructions,
-despite them having the same number of operations. 
+but the actual performance may slow. The reason is that generating a random
+number is not a simple operation. It involves a lot of computation, and the
+actual performance may be much worse than what you expect. Both `idiv` and
+`imul` instructions are $O(1)$, but `idiv` is generally way more expensive
+and requires more clock cycles than `imul`. If an algorithm involves, say, a
+million `idiv` instructions, it may take longer to run than an algorithm that
+involves a million `imul` instructions, despite them having the same number
+of operations. 
 
 The same thing applies to the data structures. A hash table may promise $O(1)$
 time complexity amortized for lookups, but the hash table needs to perform
 hashing and collision resolution, which is very expensive. In some cases,
-the hash table may be slower than, for example, a balancedbinary search tree,
+the hash table may be slower than, for example, a balanced binary search tree,
 despite the hash table having a better time complexity.
 
 Another thing to consider when implementing a data structure is the

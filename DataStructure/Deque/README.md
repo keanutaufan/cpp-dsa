@@ -202,7 +202,8 @@ void Deque<T>::push_front(const T& value) {
     if (this->isEmpty()) {
         this->head = newElement;
         this->tail = newElement;
-    } else {
+    }
+    else {
         newElement->next = this->head;
         this->head->prev = newElement;
         this->head = newElement;
@@ -232,7 +233,8 @@ void Deque<T>::push_back(const T& value) {
     if (this->isEmpty()) {
         this->head = newElement;
         this->tail = newElement;
-    } else {
+    }
+    else {
         newElement->prev = this->tail;
         this->tail->next = newElement;
         this->tail = newElement;

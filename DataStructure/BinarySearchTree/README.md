@@ -7,7 +7,7 @@ algorithm) is a binary tree where the value of each node is greater than or equa
 to any values in all the nodes in that node's left subtree and is less than or
 equal to any values in all the nodes in that node's right subtree. To better
 understand a BST, you will need a basic understanding of binary trees. I will
-not go into mathematical analysis nor deep detauils of a binary tree,
+not go into mathematical analysis nor deep details of a binary tree,
 but I will explain a (hopefully) brief introductory concept of a binary tree.
 
 ### Binary Tree
@@ -340,6 +340,10 @@ members:
 - `_remove` - A private method that removes a node from a subtree.
 -  `_clear` - A private method that deletes all nodes in a subtree.
 - `_height` - A private method that finds the height of a subtree.
+- `_predecessor` - A private method that finds the predecessor of a node in a
+  subtree.
+- `_successor` - A private method that finds the successor of a node in a
+  subtree.
 - `_preorder` - A private method that traverses a subtree in preorder.
 - `_inorder` - A private method that traverses a subtree in inorder.
 - `_postorder` - A private method that traverses a subtree in postorder.

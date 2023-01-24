@@ -368,7 +368,7 @@ will have the following public methods:
 - `preorder` - Traverse the tree in preorder.
 - `inorder` - Traverse the tree in inorder.
 - `postorder` - Traverse the tree in postorder.
-- `BinarySearchTree` - The destructor for the BST class.
+- `~BinarySearchTree` - The destructor for the BST class.
 
 The BST class will be defined as follows:
 

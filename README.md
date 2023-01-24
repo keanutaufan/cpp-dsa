@@ -124,10 +124,6 @@ give up the notion of writing our own algorithms and data structures altogether.
 You see, understanding how things work under the hood will make you
 able to make better decisions when dealing with real-world applications.
 
-You know, earlier I have mentioned that I don't really like the idea of
-bloating the repository with information that is not directly related
-to the algorithms and data structures but here I am writing a long
-paragraph about the time complexity. I guess I just can't help myself.
 Anyway, I hope this paragraph will help you understand a little bit
 more about the time complexity and how it relates to the actual performance.
 

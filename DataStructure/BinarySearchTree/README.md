@@ -1194,12 +1194,12 @@ tree. While the class instance itself can be destroyed by the compiler if
 it goes out of scope, or by the user if it was created on the heap, the nodes
 in the tree will still be allocated on the heap. Therefore, we need to
 explicitly free the memory allocated to the nodes in the tree. The destructor
-will call the `_destroy` method on the root node.
+will call the `_clear` method on the root node.
 
 ```cpp
 template <typename T>
 BinarySearchTree<T>::~BinarySearchTree() {
-    this->_destroy(this->root);
+    this->_clear(this->root);
 }
 ```
 

@@ -22,6 +22,115 @@ so more people can learn from my journey.
 
 more to come...
 
+## A Note on Complexity and Performance
+
+I provide the time complexity for each algorithm and data structure operation
+in the documentation. However, please note that the time complexity may not
+necessary reflect the actual performance of the algorithm or method.
+This is because the time complexity is usually measured in terms of the number
+of operations, which is not necessarily the same as the number of CPU cycles
+or clock cycles. For example, the time complexity of a simple `for` loop is
+$O(n)$, but the actual performance of the loop may be much better than that.
+The reason is that the compiler may optimize the loop to use SIMD instructions
+or other techniques to speed up the loop. In fact, the performance of the
+loop may be very fast if the compiler is smart enough to optimize it.
+
+The time complexity merely measures how the algorithm or method scales with the
+number of data processed. In other word, it measures the growth rate of the
+computing time as the input size grows. If the operations performed by the
+algorithm itself is slow, even a $O(1)$ algorithm may take longer to run than a
+$O(n)$ algorithm. In academic settings, the time complexity is usually measured
+in terms of the number of operations, but in real-world applications, the
+actual performance is usually more important.
+
+A code which generates a random number may have a time complexity of $O(1)$,
+but the actual performance may be much worse than that. The reason is that
+generating a random number is not a simple operation. It involves a lot of
+computation, and the actual performance may be much worse than what you
+expect. Both `idiv` and `imul` instructions are $O(1)$, but `idiv` is
+generally way more expensive and requires more clock cycles than `imul`.
+If an algorithm involves, say, a million `idiv` instructions, it may take
+longer to run than an algorithm that involves a million `imul` instructions,
+despite them having the same number of operations. 
+
+The same thing applies to the data structures. A hash table may promise $O(1)$
+time complexity amortized for lookups, but the hash table needs to perform
+hashing and collision resolution, which is very expensive. In some cases,
+the hash table may be slower than, for example, a balancedbinary search tree,
+despite the hash table having a better time complexity.
+
+Another thing to consider when implementing a data structure is the
+locality of reference. Many modern machines nowadays have a large cache.
+Cache misses are very expensive, so the locality of reference has
+become much more important than before. In context of data structures,
+a node-based data structure has a very poor locality of reference. This 
+makes it much slower than an array-based data structure, even if the
+array-based data structure has a worse time complexity in certain cases.
+
+Cache considerations are not usually taken into account when measuring
+the time complexity of an algorithm or data structure, though it can
+help us make better decisions when choosing an algorithm or data structure
+for a particular application. Cache considerations can also mean that
+it may not be a good idea to use a linked list over `std::vector`, even
+for some situations where the time complexity of the linked list is
+better than that of the vector like insertion in the middle of the list,
+like many textbooks would suggest.
+
+In a language like C++, this can get even more complicated. The compiler
+may optimize the code to produce better performance, so you may need
+to understand how the compiler works to get a better understanding of
+the actual performance of the code. For example, passing around a large
+object by reference even when we don't need to modify the object is often
+suggested by many sources as it does not involve copying the object,
+but under certain optimization levels, some compilers may actually perform
+better if we pass the object by value by generating some assembly instructions
+to optimize the object passing. On the other hand, passing an object
+by reference closes the possibility of the compiler to perform some
+optimizations, because it may assume that the data in the reference
+may be modified anywhere in the program. 
+
+There are also important considerations about when do we use specific
+features of the language. For example, we may want to use `std::move`
+to move the data from one object to another, but in some cases maybe
+it is better to avoid using `std::move` and use `std::copy` instead.
+C++ has so many features that does seemingly the same thing, but
+works really differently on low level. 
+
+Hardware also plays a big role in the performance of the code. For example,
+a tensor core in a modern GPU can perform matrix multiplication much
+faster than a CPU, but that's just how the hardware is designed. A
+GPU can also perform a lot of floating point operations in parallel,
+so it can be much faster than a CPU for some tasks. A good programmer
+knows when to pass certain computations to certain hardware, effectively
+using the hardware to its full potential.
+
+But this is just a small part of the story. We may also need to consider
+operating system, multi-threading capability, and other factors. I might
+mention some of these things in some explanations of the algorithms and
+data structures, but I will not go into too much details. My goal is to
+provide a reference of how certain algorithms and data structures work,
+how they can be implemented in C++, and what are their theoretical
+time complexities. I want to keep the explanations as brief as possible,
+and I don't really want to bloat the repository with information that
+is not directly related to the algorithms and data structures.
+
+Ah, where were we? Oh yes, the time complexity. While I have just mentioned
+that the time cmplexity is not necessarily the same as the actual performance,
+it is still a good measure of how the algorithm or data structure scales
+and should never be ignored. Also, while this probably mean that a handmade
+algorithm or data structure rarely beats a well-designed algorithm or data
+structure from a well-maintained library, it does not mean that we should
+give up the notion of writing our own algorithms and data structures altogether.
+You see, understanding how things work under the hood will make you
+able to make better decisions when dealing with real-world applications.
+
+You know, earlier I have mentioned that I don't really like the idea of
+bloating the repository with information that is not directly related
+to the algorithms and data structures but here I am writing a long
+paragraph about the time complexity. I guess I just can't help myself.
+Anyway, I hope this paragraph will help you understand a little bit
+more about the time complexity and how it relates to the actual performance.
+
 ## Important Notice
 
 The implementations of hosted algorithms and data structures are not

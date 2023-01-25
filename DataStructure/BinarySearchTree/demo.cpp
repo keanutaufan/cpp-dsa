@@ -9,7 +9,7 @@ int compare(const int& a, const int& b) {
 
 int main() {
 
-    DSA::BinarySearchTree<int> bst;
+    DSA::BinarySearchTree<int> bst(compare);
     std::cout << "HEIGHT: " << bst.height() << std::endl;
     std::cout << "SIZE: " << bst.size() << std::endl;
     std::cout << "ISEMPTY: " << bst.isEmpty() << std::endl;

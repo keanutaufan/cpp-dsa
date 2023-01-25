@@ -143,7 +143,10 @@ Though it is not heavily targeted towards real-world applications, I'd like
 to make the collection of these algorithms and data structures as efficient
 and safe as possible, to the point that this project is good
 enough to be used for production. So if you find any bug or inefficiency,
-please open an issue or send a pull request.
+please open an issue or send a pull request. That being said, my intention
+is to prioritize readability and simplicity over efficiency, so if me
+not using some advanced C++ features or techniques is the reason why
+the code is not efficient, I may not consider to change it.
 
 You can also contribute to non-code parts of this repository. After all,
 this is a learning resource, and I'd like to make it as clear and

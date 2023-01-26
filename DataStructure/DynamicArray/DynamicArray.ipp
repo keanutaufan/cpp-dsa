@@ -10,217 +10,217 @@ namespace DSA {
     void DynamicArray<T>::_resize(const std::size_t newCapacity) {
         T* newBuffer = new T[newCapacity];
 
-        const std::size_t endPos = std::min(newCapacity, this->currentIndex);
+        const std::size_t endPos = std::min(newCapacity, m_size);
         for (std::size_t i = 0; i < endPos; i++) {
-            newBuffer[i] = buffer[i];
+            newBuffer[i] = m_buffer[i];
         }
 
-        delete[] this->buffer;
-        this->buffer = newBuffer;
-        this->bufferCapacity = newCapacity;
+        delete[] m_buffer;
+        m_buffer = newBuffer;
+        m_capacity = newCapacity;
 
-        if (newCapacity < this->currentIndex) {
-            this->currentIndex = newCapacity;
+        if (newCapacity < m_size) {
+            m_size = newCapacity;
         }
     }
 
     template <typename T>
     void DynamicArray<T>::_shift_right(const std::size_t startPos, const std::size_t count) {
-        std::size_t minimumRequiredCapacity = this->currentIndex + count;
-        if (minimumRequiredCapacity > this->bufferCapacity) {
-            std::size_t newCapacity = this->bufferCapacity;
+        std::size_t minimumRequiredCapacity = m_size + count;
+        if (minimumRequiredCapacity > m_capacity) {
+            std::size_t newCapacity = m_capacity;
             while (newCapacity < minimumRequiredCapacity) {
                 newCapacity *= _DYNAMIC_ARRAY_GROWTH_FACTOR;
             }
-            this->_resize(newCapacity);
+            _resize(newCapacity);
         }
 
         for (std::size_t i = minimumRequiredCapacity-1; i >= startPos+count; i--) {
-            buffer[i] = buffer[i-count];
+            m_buffer[i] = m_buffer[i-count];
         }
 
-        this->currentIndex += count;
+        m_size += count;
     }
 
     template <typename T>
     void DynamicArray<T>::_shift_left(const std::size_t startPos, const std::size_t count) {
-        for (std::size_t i = startPos; i < currentIndex-count; i++) {
+        for (std::size_t i = startPos; i < m_size-count; i++) {
             if (!_IS_TYPE_POINTER) {
-                buffer[i].~T();
+                m_buffer[i].~T();
             }            
-            buffer[i] = buffer[i+count];
+            m_buffer[i] = m_buffer[i+count];
         }
 
-        this->currentIndex -= count;
+        m_size -= count;
     }
 
     template <typename T>
     DynamicArray<T>::DynamicArray() {
-        this->buffer = new T[_DYNAMIC_ARRAY_INIT_SIZE];
-        this->currentIndex = 0;
-        this->bufferCapacity = _DYNAMIC_ARRAY_INIT_SIZE;
+        m_buffer = new T[_DYNAMIC_ARRAY_INIT_SIZE];
+        m_size = 0;
+        m_capacity = _DYNAMIC_ARRAY_INIT_SIZE;
     }
 
     template <typename T>
     void DynamicArray<T>::push_back(const T& value) {
-        if (this->currentIndex >= this->bufferCapacity) {
-            this->_resize(this->bufferCapacity * _DYNAMIC_ARRAY_GROWTH_FACTOR);
+        if (m_size >= m_capacity) {
+            _resize(m_capacity * _DYNAMIC_ARRAY_GROWTH_FACTOR);
         }
 
-        this->buffer[currentIndex++] = value;
+        m_buffer[m_size++] = value;
     }
 
     template <typename T>
     void DynamicArray<T>::pop_back() {
-        if (this->is_empty()) {
+        if (is_empty()) {
             throw std::underflow_error("Array is empty.");
         }
 
         if (!_IS_TYPE_POINTER) {
-            this->buffer[this->currentIndex-1].~T();
+            m_buffer[m_size-1].~T();
         }
 
-        this->currentIndex--;
+        m_size--;
     }
 
     template <typename T>
     void DynamicArray<T>::insert_at(const std::size_t index, const T& value) {
-        if (index < 0 || index >= this->currentIndex) {
+        if (index < 0 || index >= m_size) {
             throw std::out_of_range("Index out of range.");
         }
 
-        this->_shift_right(index, 1);
-        this->buffer[index] = value;
+        _shift_right(index, 1);
+        m_buffer[index] = value;
     }
 
     template <typename T>
     void DynamicArray<T>::insert_at(const std::size_t index, const T& value, const std::size_t count) {
-        if (index < 0 || index >= this->currentIndex) {
+        if (index < 0 || index >= m_size) {
             throw std::out_of_range("Index out of range.");
         }
 
-        this->_shift_right(index, count);
+        _shift_right(index, count);
         for (std::size_t i = index; i < index+count; i++) {
-            this->buffer[i] = value;
+            m_buffer[i] = value;
         }
     }
 
     template <typename T>
     void DynamicArray<T>::remove_at(const std::size_t index) {
-        if (this->is_empty()) {
+        if (is_empty()) {
             throw std::underflow_error("Array is empty.");
         }
 
-        this->_shift_left(index, 1);
+        _shift_left(index, 1);
     }
 
     template <typename T>
     void DynamicArray<T>::remove_at(const std::size_t index, const std::size_t count) {
-        if (index + count > this->currentIndex) {
+        if (index + count > m_size) {
             throw std::out_of_range("End removal position is out of range.");
         }
 
-        this->_shift_left(index, count);
+        _shift_left(index, count);
     }
 
     template <typename T>
     void DynamicArray<T>::resize(const std::size_t count) {
-        std::size_t previousIndex = this->currentIndex;
-        this->_resize(count);
+        std::size_t previousIndex = m_size;
+        _resize(count);
         if (previousIndex < count) {
             for (std::size_t i = previousIndex; i < count; i++) {
-                this->buffer[i] = T();
+                m_buffer[i] = T();
             }
         }
-        this->currentIndex = count;
+        m_size = count;
     }
 
     template <typename T>
     void DynamicArray<T>::resize(const std::size_t count, const T& value) {
-        std::size_t previousIndex = this->currentIndex;
-        this->_resize(count);
+        std::size_t previousIndex = m_size;
+        _resize(count);
         if (previousIndex < count) {
             for (std::size_t i = previousIndex; i < count; i++) {
-                this->buffer[i] = value;
+                m_buffer[i] = value;
             }
         }
-        this->currentIndex = count;
+        m_size = count;
     }
 
     template <typename T>
     inline bool DynamicArray<T>::is_empty() const {
-        return this->currentIndex == 0;
+        return m_size == 0;
     }
 
     template <typename T>
     inline std::size_t DynamicArray<T>::size() const {
-        return this->currentIndex;
+        return m_size;
     }
 
     template <typename T>
     inline std::size_t DynamicArray<T>::capacity() const {
-        return this->bufferCapacity;
+        return m_capacity;
     }
 
     template <typename T>
     void DynamicArray<T>::reserve(const std::size_t newCapacity) {
-        if (newCapacity > this->bufferCapacity) {
-            this->_resize(newCapacity);
+        if (newCapacity > m_capacity) {
+            _resize(newCapacity);
         }
     }
 
     template <typename T>
     void DynamicArray<T>::clear() {
-        delete[] this->buffer;
-        this->buffer = new T[_DYNAMIC_ARRAY_INIT_SIZE];
-        this->currentIndex = 0;
+        delete[] m_buffer;
+        m_buffer = new T[_DYNAMIC_ARRAY_INIT_SIZE];
+        m_size = 0;
     }
 
     template <typename T>
     void DynamicArray<T>::shrink_to_fit() {
-        this->_resize(this->currentIndex);
+        _resize(m_size);
     }
 
     template <typename T>
     T& DynamicArray<T>::front() {
-        if (this->is_empty()) {
+        if (is_empty()) {
             throw std::out_of_range("Array is empty.");
         }
 
-        return this->buffer[0];
+        return m_buffer[0];
     }
 
     template <typename T>
     T& DynamicArray<T>::back() {
-        if (this->is_empty()) {
+        if (is_empty()) {
             throw std::out_of_range("Array is empty");
         }
 
-        return this->buffer[this->currentIndex-1];
+        return m_buffer[m_size-1];
     }
 
     template <typename T>
     T& DynamicArray<T>::at(const std::size_t index) {
-        if (index < 0 || index >= this->currentIndex) {
+        if (index < 0 || index >= m_size) {
             throw std::out_of_range("Index out of range.");
         }
 
-        return this->buffer[index];
+        return m_buffer[index];
     }
 
     template <typename T>
     inline T& DynamicArray<T>::operator[](const std::size_t index) {
-        return this->buffer[index];
+        return m_buffer[index];
     }
 
     template <typename T>
     inline T* DynamicArray<T>::data() {
-        return this->buffer;
+        return m_buffer;
     }
 
     template <typename T>
     DynamicArray<T>::~DynamicArray() {
-        delete[] this->buffer;
+        delete[] m_buffer;
     }
 }
 

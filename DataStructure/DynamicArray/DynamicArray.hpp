@@ -14,9 +14,9 @@ namespace DSA {
         const bool _IS_TYPE_POINTER = std::is_pointer<T>::value;
 
     private:
-        T* buffer;
-        std::size_t currentIndex;
-        std::size_t bufferCapacity;
+        T* m_buffer;
+        std::size_t m_size;
+        std::size_t m_capacity;
 
         void _resize(const std::size_t newSize);
         void _shift_right(const std::size_t startPos, const std::size_t count);

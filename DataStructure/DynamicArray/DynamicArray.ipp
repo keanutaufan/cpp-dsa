@@ -141,17 +141,17 @@ namespace DSA {
     }
 
     template <typename T>
-    bool DynamicArray<T>::isEmpty() {
+    inline bool DynamicArray<T>::isEmpty() const {
         return this->currentIndex == 0;
     }
 
     template <typename T>
-    std::size_t DynamicArray<T>::size() {
+    inline std::size_t DynamicArray<T>::size() const {
         return this->currentIndex;
     }
 
     template <typename T>
-    std::size_t DynamicArray<T>::capacity() {
+    inline std::size_t DynamicArray<T>::capacity() const {
         return this->bufferCapacity;
     }
 
@@ -202,12 +202,12 @@ namespace DSA {
     }
 
     template <typename T>
-    T& DynamicArray<T>::operator[](const std::size_t index) {
+    inline T& DynamicArray<T>::operator[](const std::size_t index) {
         return this->buffer[index];
     }
 
     template <typename T>
-    T* DynamicArray<T>::data() {
+    inline T* DynamicArray<T>::data() {
         return this->buffer;
     }
 

@@ -137,6 +137,38 @@ If you are planning to do something serious, I recommend using C++
 STL or a well-maintained library like [Boost](https://github.com/boostorg/boost). 
 Should you wish to use this code, please do so at your own risk.
 
+## Dev Notes
+
+My intention with this repository is mainly to provide a reference
+for students and programmers who are interested in learning about
+algorithms and data structures about how they work in theory and
+the general idea of how they can be implemented in C++. That being said,
+the first thing that came to my mind when I started this project was
+to use "C with Classes" approach instead a proper, more modern C++
+actually used in real-world applications nowadays. I'm aware that
+this may not be the best approach of doing things in C++ especially
+in this day and age, but I think it is a good way to introduce
+algorithms and data structures to those who mainly care about
+the theory and the general idea of how they work instead of
+how they specifically work in C++, considering how confusing
+they can be for those who are not yet familiar with it.
+
+But now that I have started this project, I'm not sure if I should
+continue using this approach or not. I can't really stand myself
+labelling this project as "C++" when it is not really C++ at all.
+You might have noticed that ownsership management is done manually
+instead of using smart pointers, and there are a lot of `new` and
+`delete` statements. You might also have noticed that I'm not using
+any advanced C++ features like move semantics, lambda expressions,
+and so on. I also didn't take advantage of `constexpr` when I could.
+The list goes on.
+
+I'm not sure if I should continue using this approach or not. Yes,
+it may be a non-confusing way to introduce algorithms and data
+structures to a lot of people, but on the other hand, I specifically
+marked this project as a "C++ DSA Reference". I'm not really
+sure how to proceed from here, so I'm open to suggestions.
+
 ## Contributing
 
 Though it is not heavily targeted towards real-world applications, I'd like

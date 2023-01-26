@@ -45,6 +45,9 @@ namespace DSA {
     template <typename T>
     void DynamicArray<T>::_shift_left(const std::size_t startPos, const std::size_t count) {
         for (std::size_t i = startPos; i < currentIndex-count; i++) {
+            if (!_IS_TYPE_POINTER) {
+                buffer[i].~T();
+            }            
             buffer[i] = buffer[i+count];
         }
 
@@ -71,6 +74,10 @@ namespace DSA {
     void DynamicArray<T>::pop_back() {
         if (this->is_empty()) {
             throw std::underflow_error("Array is empty.");
+        }
+
+        if (!_IS_TYPE_POINTER) {
+            this->buffer[this->currentIndex-1].~T();
         }
 
         this->currentIndex--;

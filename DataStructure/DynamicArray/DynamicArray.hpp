@@ -2,6 +2,7 @@
 #define CPPDSA_DATA_STRUCTURE_DYNAMIC_ARRAY_HPP_
 
 #include <cstddef>
+#include <type_traits>
 
 namespace DSA {
 
@@ -10,6 +11,7 @@ namespace DSA {
     private:
         const std::size_t _DYNAMIC_ARRAY_INIT_SIZE = 8;
         const std::size_t _DYNAMIC_ARRAY_GROWTH_FACTOR = 2;
+        const bool _IS_TYPE_POINTER = std::is_pointer<T>::value;
 
     private:
         T* buffer;

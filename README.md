@@ -91,7 +91,7 @@ may be modified anywhere in the program.
 
 There are also important considerations about when do we use specific
 features of the language. For example, we may want to use `std::move`
-to move the data from one object to another, but in some cases maybe
+to invoke the move constructor of an object, but in some cases maybe
 it is better to avoid using `std::move` and use `std::copy` instead.
 C++ has so many features that does seemingly the same thing, but
 works really differently on low level. 
@@ -115,7 +115,7 @@ and I don't really want to bloat the repository with information that
 is not directly related to the algorithms and data structures.
 
 Ah, where were we? Oh yes, the time complexity. While I have just mentioned
-that the time cmplexity is not necessarily the same as the actual performance,
+that the time complexity is not necessarily the same as the actual performance,
 it is still a good measure of how the algorithm or data structure scales
 and should never be ignored. Also, while this probably mean that a handmade
 algorithm or data structure rarely beats a well-designed algorithm or data

@@ -33,7 +33,7 @@ namespace DSA {
         void resize(const std::size_t count, const T& value);
         void clear();
 
-        bool isEmpty() const;
+        bool is_empty() const;
         std::size_t size() const;
         std::size_t capacity() const;
         void reserve(const std::size_t newCapacity);

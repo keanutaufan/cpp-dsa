@@ -69,7 +69,7 @@ namespace DSA {
 
     template <typename T>
     void DynamicArray<T>::pop_back() {
-        if (this->isEmpty()) {
+        if (this->is_empty()) {
             throw std::underflow_error("Array is empty.");
         }
 
@@ -100,7 +100,7 @@ namespace DSA {
 
     template <typename T>
     void DynamicArray<T>::remove_at(const std::size_t index) {
-        if (this->isEmpty()) {
+        if (this->is_empty()) {
             throw std::underflow_error("Array is empty.");
         }
 
@@ -141,7 +141,7 @@ namespace DSA {
     }
 
     template <typename T>
-    inline bool DynamicArray<T>::isEmpty() const {
+    inline bool DynamicArray<T>::is_empty() const {
         return this->currentIndex == 0;
     }
 
@@ -176,7 +176,7 @@ namespace DSA {
 
     template <typename T>
     T& DynamicArray<T>::front() {
-        if (this->isEmpty()) {
+        if (this->is_empty()) {
             throw std::out_of_range("Array is empty.");
         }
 
@@ -185,7 +185,7 @@ namespace DSA {
 
     template <typename T>
     T& DynamicArray<T>::back() {
-        if (this->isEmpty()) {
+        if (this->is_empty()) {
             throw std::out_of_range("Array is empty");
         }
 

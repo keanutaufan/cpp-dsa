@@ -36,6 +36,9 @@ namespace DSA {
         }
 
         for (std::size_t i = minimumRequiredCapacity-1; i >= startPos+count; i--) {
+            if (!_IS_TYPE_POINTER) {
+                m_buffer[i].~T();
+            }
             m_buffer[i] = m_buffer[i-count];
         }
 

@@ -14,6 +14,7 @@ so more people can learn from my journey.
 
 ### Data Structures
 
+- [Dynamic Array](DataStructure/DynamicArray)
 - [Stack](DataStructure/Stack)
 - [Queue](DataStructure/Queue)
 - [Deque](DataStructure/Deque)

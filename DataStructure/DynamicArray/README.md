@@ -239,7 +239,7 @@ to the growth factor of our dynamic array implementation:
 |       Implementation       |       Growth Factor      |
 |:--------------------------:|:------------------------:|
 | Java `arrayList`           | $1.5$                    |
-| Python `PyListObject`      | ~$1.125 (n + (n >> 3))$  |
+| Python `PyListObject`      | ~ $1.125 (n + (n >> 3))$ |
 | Microsoft Visual C++ 2013  | $1.5$                    |
 | G++ 5.2.0                  | $2$                      |
 | Clang 3.6                  | $2$                      |

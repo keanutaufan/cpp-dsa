@@ -48,22 +48,22 @@ namespace DSA {
     }
 
     template <typename T>
-    inline const T& Queue<T>::peek_front() {
+    inline const T& Queue<T>::peek_front() const {
         return m_head->data;
     }
 
     template <typename T>
-    inline const T& Queue<T>::peek_back() {
+    inline const T& Queue<T>::peek_back() const {
         return m_tail->data;
     }
 
     template <typename T>
-    inline bool Queue<T>::is_empty() {
+    inline bool Queue<T>::is_empty() const {
         return m_size == 0;
     }
 
     template <typename T>
-    inline std::size_t Queue<T>::size() {
+    inline std::size_t Queue<T>::size() const {
         return m_size;
     }
 

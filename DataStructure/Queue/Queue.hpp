@@ -23,11 +23,11 @@ namespace DSA {
         void enqueue(const T& value);
         void dequeue();
         
-        const T& peek_front();
-        const T& peek_back();
+        const T& peek_front() const;
+        const T& peek_back() const;
 
-        bool is_empty();
-        std::size_t size();
+        bool is_empty() const;
+        std::size_t size() const;
 
         ~Queue();
     };

@@ -702,8 +702,8 @@ method.
 
 ```cpp
 template <typename T>
-const T& SomeClass<T>::someComplexMethod(const std::size_t index) const {
-    const T& element = someDynamicArray.at(index);
+const T& DynamicArray<T>::someComplexMethod(const std::size_t index) const {
+    const T& element = m_buffer[index];
     // Do some complex operation done in the non-const version of the method
     // ...
     return element;
@@ -724,8 +724,8 @@ versions of the method.
 
 ```cpp
 template <typename T>
-const T& SomeClass<T>::someComplexMethod(const std::size_t index) const {
-    return const_cast<T&>(static_cast<const SomeClass<T>&>(*this).at(index));
+const T& DynamicArray<T>::someComplexMethod(const std::size_t index) const {
+    return const_cast<T&>(static_cast<const DynamicArray<T>&>(*this).someComplexMethod(index));
 }
 ``` 
 
@@ -737,8 +737,8 @@ which is considered as a more elegant solution to this problem.
 
 ```cpp
 template <typename T>
-const T& SomeClass<T>::someComplexMethod(const std::size_t index) const {
-    return const_cast<T&>(std::as_const(*this).at(index));
+const T& DynamicArray<T>::someComplexMethod(const std::size_t index) const {
+    return const_cast<T&>(std::as_const(*this).someComplexMethod(index));
 }
 ```
 

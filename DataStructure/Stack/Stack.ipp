@@ -35,17 +35,17 @@ namespace DSA {
     }
 
     template <typename T>
-    inline const T& Stack<T>::peek() {
+    inline const T& Stack<T>::peek() const {
         return m_top->data;
     }
 
     template <typename T>
-    inline bool Stack<T>::is_empty() {
+    inline bool Stack<T>::is_empty() const {
         return m_size == 0;
     }
 
     template <typename T>
-    inline std::size_t Stack<T>::size() {
+    inline std::size_t Stack<T>::size() const {
         return m_size;
     }
 

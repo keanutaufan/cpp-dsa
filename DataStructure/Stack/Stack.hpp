@@ -23,10 +23,10 @@ namespace DSA {
         void push(const T& value);
         void pop();
 
-        const T& peek();
+        const T& peek() const;
 
-        bool is_empty();
-        std::size_t size();
+        bool is_empty() const;
+        std::size_t size() const;
 
         ~Stack();
     };

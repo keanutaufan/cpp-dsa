@@ -20,6 +20,7 @@ so more people can learn from my journey.
 - [Deque](DataStructure/Deque)
 - [Linked List](DataStructure/LinkedList)
 - [Binary Search Tree (with fair explanation about binary tree)](DataStructure/BinarySearchTree)
+- [Priority Queue (with fair explanation about binary heap)](DataStructure/PriorityQueue)
 
 more to come...
 

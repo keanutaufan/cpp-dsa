@@ -24,7 +24,7 @@ A stack data structure supports at least these basic operations:
 - `push` - Adds an element to the top of the stack.
 - `pop` - Removes the element at the top of the stack.
 - `peek` or `m_top` - Returns the element at the top of the stack.
-- `isEmpty` - Returns true if the stack is empty, false otherwise.
+- `is_empty` - Returns true if the stack is empty, false otherwise.
 
 Some implementations of a stack may also keep track of the size of the stack,
 which would allow the user to query the size of the stack. The stack data
@@ -40,7 +40,7 @@ stack will be wrapped in a class.
 | `push`    | $O(1)$          |
 | `pop`     | $O(1)$          |
 | `peek`    | $O(1)$          |
-| `isEmpty` | $O(1)$          |
+| `is_empty` | $O(1)$          |
 | `size`    | $O(1)$          |
 
 As you can see, all of the operations on a stack are in constant time, which
@@ -127,7 +127,7 @@ public:
 
     const T& peek() const;
 
-    bool isEmpty() const;
+    bool is_empty() const;
     std::size_t size() const;
 
     ~Stack();
@@ -176,7 +176,7 @@ will then delete the temporary pointer and decrement the `m_size` by 1.
 ```cpp
 template <typename T>
 void Stack<T>::pop() {
-    if (isEmpty()) {
+    if (is_empty()) {
         throw std::underflow_error("Stack is empty.");
     }
 
@@ -234,7 +234,7 @@ to do this until the stack is empty.
 ```cpp
 template <typename T>
 Stack<T>::~Stack() {
-    while (!isEmpty()) {
+    while (!is_empty()) {
         StackNode<T>* previousTopElement = m_top;
         m_top = m_top->next;
         delete previousTopElement;

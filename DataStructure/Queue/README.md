@@ -27,7 +27,7 @@ A queue data structure supports at least these basic operations:
 - `enqueue` - Adds an element to the back of the queue.
 - `dequeue` - Removes the element at the front of the queue.
 - `front` - Returns the element at the front of the queue.
-- `isEmpty` - Returns true if the queue is empty, false otherwise.
+- `is_empty` - Returns true if the queue is empty, false otherwise.
 
 Some implementation of a queue may also keep track of the size of the queue,
 which would allow the user to query the size of the queue. Some implementation
@@ -44,7 +44,7 @@ operations.
 | `dequeue` | $O(1)$          |
 | `front`   | $O(1)$          |
 | `back`    | $O(1)$          |
-| `isEmpty` | $O(1)$          |
+| `is_empty`| $O(1)$          |
 | `size`    | $O(1)$          |
 
 As you can see, all of the operations on a queue are in constant time, which

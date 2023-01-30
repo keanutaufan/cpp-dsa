@@ -36,7 +36,7 @@ A deque data structure supports at least these basic operations:
 - `pop_back` or `pop` - Removes the element at the back of the deque.
 - `front` - Returns the element at the front of the deque.
 - `back` - Returns the element at the back of the deque.
-- `isEmpty` - Returns true if the deque is empty, false otherwise.
+- `is_empty` - Returns true if the deque is empty, false otherwise.
 
 Some implementation of a deque may also keep track of the size of the deque,
 which would allow the user to query the size of the deque. This implementation
@@ -52,7 +52,7 @@ would also support the `size` operation, which returns the size of the deque.
 | `pop_back`   | $O(1)$          |
 | `front`      | $O(1)$          |
 | `back`       | $O(1)$          |
-| `isEmpty`    | $O(1)$          |
+| `is_empty`   | $O(1)$          |
 | `size`       | $O(1)$          |
 
 As you can see, all of the operations on a deque are in constant time, which
@@ -106,10 +106,10 @@ member within the deque class to prevent the user from accessing the node direct
 
 ```cpp
 template <typename T>
-struct DequeContainer {
+struct DequeNode {
     T data;
-    DequeContainer<T>* next;
-    DequeContainer<T>* prev;
+    DequeNode<T>* next;
+    DequeNode<T>* prev;
 };
 ```
 
@@ -119,9 +119,9 @@ The deque class will be defined as a template class, which means that the user
 can use the deque with any data type. The class will have the following private
 members:
 
-- `head` - A pointer to the front of the deque.
-- `tail` - A pointer to the back of the deque.
-- `dequeSize` - The size of the deque.
+- `m_head` - A pointer to the front of the deque.
+- `m_tail` - A pointer to the back of the deque.
+- `m_size` - The size of the deque.
 
 The class will have the following public methods:
 - `Deque` - The constructor for the deque.
@@ -131,7 +131,7 @@ The class will have the following public methods:
 - `pop_back` - Removes the element at the back of the deque.
 - `peek_front` - Returns the element at the front of the deque.
 - `peek_back` - Returns the element at the back of the deque.
-- `isEmpty` - Returns true if the deque is empty, false otherwise.
+- `is_empty` - Returns true if the deque is empty, false otherwise.
 - `size` - Returns the size of the deque.
 - `~Deque` - The destructor for the deque.
 
@@ -140,15 +140,15 @@ template <typename T>
 class Deque {
 private:
     template <typename U>
-    struct DequeContainer {
+    struct DequeNode {
         U data;
-        DequeContainer<U>* next;
-        DequeContainer<U>* prev;
+        DequeNode<U>* next;
+        DequeNode<U>* prev;
     };
 
-    DequeContainer<T>* head;
-    DequeContainer<T>* tail;
-    std::size_t dequeSize;
+    DequeNode<T>* m_head;
+    DequeNode<T>* m_tail;
+    std::size_t m_size;
 
 public:
     Deque();
@@ -158,11 +158,11 @@ public:
     void pop_front();
     void pop_back();
 
-    const T& peek_front();
-    const T& peek_back();
+    const T& peek_front() const;
+    const T& peek_back() const;
 
-    bool isEmpty();
-    std::size_t size();
+    bool is_empty() const;
+    std::size_t size() const;
 
     ~Deque();
 };
@@ -170,15 +170,15 @@ public:
 
 ### Constructor
 
-The constructor for the deque will initialize the `head` and `tail` pointers to
-`nullptr` and the `dequeSize` to `0`.
+The constructor for the deque will initialize the `m_head` and `m_tail` pointers to
+`nullptr` and the `m_size` to `0`.
 
 ```cpp
 template <typename T>
 Deque<T>::Deque() {
-    this->head = nullptr;
-    this->tail = nullptr;
-    this->dequeSize = 0;
+    m_head = nullptr;
+    m_tail = nullptr;
+    m_size = 0;
 }
 ```
 
@@ -187,29 +187,29 @@ Deque<T>::Deque() {
 The `push_front` method will add an element to the front of the deque. The method
 will take in a constant reference to the element to be added. The method will
 create a new node to store the element and add it to the front of the deque. If
-the deque is empty, the `head` and `tail` pointers will be set to the new node.
-Otherwise, the `head` pointer will be updated to point to the new node. The
-`dequeSize` will be incremented by 1.
+the deque is empty, the `m_head` and `m_tail` pointers will be set to the new node.
+Otherwise, the `m_head` pointer will be updated to point to the new node. The
+`m_size` will be incremented by 1.
 
 ```cpp
 template <typename T>
 void Deque<T>::push_front(const T& value) {
-    DequeContainer<T>* newElement = new DequeContainer<T>();
+    DequeNode<T>* newElement = new DequeNode<T>();
     newElement->data = value;
     newElement->next = nullptr;
     newElement->prev = nullptr;
 
-    if (this->isEmpty()) {
-        this->head = newElement;
-        this->tail = newElement;
+    if (is_empty()) {
+        m_head = newElement;
+        m_tail = newElement;
     }
     else {
-        newElement->next = this->head;
-        this->head->prev = newElement;
-        this->head = newElement;
+        newElement->next = m_head;
+        m_head->prev = newElement;
+        m_head = newElement;
     }
 
-    this->dequeSize++;
+    m_size++;
 }
 ```
 
@@ -218,29 +218,29 @@ void Deque<T>::push_front(const T& value) {
 The `push_back` method will add an element to the back of the deque. The method
 will take in a constant reference to the element to be added. The method will
 create a new node to store the element and add it to the back of the deque. If
-the deque is empty, the `head` and `tail` pointers will be set to the new node.
-Otherwise, the `tail` pointer will be updated to point to the new node. The
-`dequeSize` will be incremented by 1.
+the deque is empty, the `m_head` and `m_tail` pointers will be set to the new node.
+Otherwise, the `m_tail` pointer will be updated to point to the new node. The
+`m_size` will be incremented by 1.
 
 ```cpp
 template <typename T>
 void Deque<T>::push_back(const T& value) {
-    DequeContainer<T>* newElement = new DequeContainer<T>();
+    DequeNode<T>* newElement = new DequeNode<T>();
     newElement->data = value;
     newElement->next = nullptr;
     newElement->prev = nullptr;
 
-    if (this->isEmpty()) {
-        this->head = newElement;
-        this->tail = newElement;
+    if (is_empty()) {
+        m_head = newElement;
+        m_tail = newElement;
     }
     else {
-        newElement->prev = this->tail;
-        this->tail->next = newElement;
-        this->tail = newElement;
+        newElement->prev = tail;
+        m_tail->next = newElement;
+        m_tail = newElement;
     }
 
-    this->dequeSize++;
+    m_size++;
 }
 ```
 
@@ -249,28 +249,28 @@ void Deque<T>::push_back(const T& value) {
 The `pop_front` method will remove the element at the front of the deque. The
 method will check if the deque is empty. If the deque is empty, the method will
 throw an `std::underflow_error` exception. If the deque has exactly one element,
-the `head` and `tail` pointers will be set to `nullptr` after deletion. Otherwise,
-the `head` pointer will be updated to point to the next node in the deque. The `dequeSize` will be decremented by 1.
+the `m_head` and `m_tail` pointers will be set to `nullptr` after deletion. Otherwise,
+the `m_head` pointer will be updated to point to the next node in the deque. The `m_size` will be decremented by 1.
 
 ```cpp
 template <typename T>
 void Deque<T>::pop_front() {
-    if (this->dequeSize == 0) {
+    if (m_size == 0) {
         throw std::underflow_error("Deque is empty.");
     }
-    else if (this->dequeSize == 1) {
-        delete this->head;
-        this->head = nullptr;
-        this->tail = nullptr;
+    else if (m_size == 1) {
+        delete head;
+        m_head = nullptr;
+        m_tail = nullptr;
     }
     else {
-        DequeContainer<T>* newHead = this->head->next;
+        DequeNode<T>* newHead = m_head->next;
         newHead->prev = nullptr;
-        delete this->head;
-        this->head = newHead;
+        delete m_head;
+        m_head = newHead;
     }
 
-    this->dequeSize--;
+    m_size--;
 }
 ```
 
@@ -279,29 +279,29 @@ void Deque<T>::pop_front() {
 The `pop_back` method will remove the element at the back of the deque. The
 method will check if the deque is empty. If the deque is empty, the method will
 throw an `std::underflow_error` exception. If the deque has exactly one element,
-the `head` and `tail` pointers will be set to `nullptr` after deletion. Otherwise,
-the `tail` pointer will be updated to point to the previous node in the deque.
-The `dequeSize` will be decremented by 1.
+the `m_head` and `m_tail` pointers will be set to `nullptr` after deletion. Otherwise,
+the `m_tail` pointer will be updated to point to the previous node in the deque.
+The `m_size` will be decremented by 1.
 
 ```cpp
 template <typename T>
 void Deque<T>::pop_back() {
-    if (this->dequeSize == 0) {
+    if (m_size == 0) {
         throw std::underflow_error("Deque is empty.");
     }
-    else if (this->dequeSize == 1) {
-        delete this->tail;
-        this->head = nullptr;
-        this->tail = nullptr;
+    else if (m_size == 1) {
+        delete tail;
+        m_head = nullptr;
+        m_tail = nullptr;
     }
     else {
-        DequeContainer<T>* newTail = this->tail->prev;
+        DequeNode<T>* newTail = m_tail->prev;
         newTail->next = nullptr;
-        delete this->tail;
-        this->tail = newTail;
+        delete m_tail;
+        m_tail = newTail;
     }
 
-    this->dequeSize--;
+    m_size--;
 }
 ```
 
@@ -309,12 +309,12 @@ void Deque<T>::pop_back() {
 
 The `peek_front` method will return the element at the front of the deque. 
 The method will be an inline method that will return the `data` member of the
-`head` node.
+`m_head` node.
 
 ```cpp
 template <typename T>
-inline const T& Deque<T>::peek_front() {
-    return this->head->data;
+inline const T& Deque<T>::peek_front() const {
+    return m_head->data;
 }
 ```
 
@@ -322,37 +322,37 @@ inline const T& Deque<T>::peek_front() {
 
 The `peek_back` method will return the element at the back of the deque.
 The method will be an inline method that will return the `data` member of the
-`tail` node.
+`m_tail` node.
 
 ```cpp
 template <typename T>
-inline const T& Deque<T>::peek_back() {
-    return this->tail->data;
+inline const T& Deque<T>::peek_back() const {
+    return m_tail->data;
 }
 ```
 
-### `isEmpty`
+### `is_empty`
 
-The `isEmpty` method will return a boolean value indicating if the deque is
+The `is_empty` method will return a boolean value indicating if the deque is
 empty. The method will be an inline method that will return `true` if the
-`dequeSize` is `0` and `false` otherwise.
+`m_size` is `0` and `false` otherwise.
 
 ```cpp
 template <typename T>
-inline bool Deque<T>::isEmpty() {
-    return this->dequeSize == 0;
+inline bool Deque<T>::is_empty() const {
+    return m_size == 0;
 }
 ```
 
 ### `size`
 
 The `size` method will return the size of the deque. The method will be an
-inline method that will return the `dequeSize` member.
+inline method that will return the `m_size` member.
 
 ```cpp
 template <typename T>
-inline std::size_t Deque<T>::size() {
-    return this->dequeSize;
+inline std::size_t Deque<T>::size() const {
+    return m_size;
 }
 ```
 
@@ -368,9 +368,9 @@ each node.
 ```cpp
 template <typename T>
 Deque<T>::~Deque() {
-    DequeContainer<T>* currentElement = this->head;
+    DequeNode<T>* currentElement = m_head;
     while (currentElement != nullptr) {
-        DequeContainer<T>* nextElement = currentElement->next;
+        DequeNode<T>* nextElement = currentElement->next;
         delete currentElement;
         currentElement = nextElement;
     }

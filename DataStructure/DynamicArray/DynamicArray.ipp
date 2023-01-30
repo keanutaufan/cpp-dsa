@@ -186,7 +186,7 @@ namespace DSA {
 
     template <typename T>
     T& DynamicArray<T>::front() {
-        return const_cast<T&>(static_cast<const T&>(*this).front());
+        return const_cast<T&>(static_cast<const DynamicArray<T>&>(*this).front());
     }
 
     template <typename T>
@@ -200,7 +200,7 @@ namespace DSA {
 
     template <typename T>
     T& DynamicArray<T>::back() {
-        return const_cast<T&>(static_cast<const T&>(*this).back());
+        return const_cast<T&>(static_cast<const DynamicArray<T>&>(*this).back());
     }
 
     template <typename T>
@@ -214,7 +214,7 @@ namespace DSA {
 
     template <typename T>
     T& DynamicArray<T>::at(const std::size_t index) {
-        return const_cast<T&>(static_cast<const T&>(*this).at());
+        return const_cast<T&>(static_cast<const DynamicArray<T>&>(*this).at());
     }
 
     template <typename T>
@@ -238,7 +238,7 @@ namespace DSA {
 
     template <typename T>
     inline T* DynamicArray<T>::data() {
-        return const_cast<T&>(static_cast<const T&>(*this).data());
+        return const_cast<T&>(static_cast<const DynamicArray<T>&>(*this).data());
     }
 
     template <typename T>

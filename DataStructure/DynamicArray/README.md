@@ -725,7 +725,7 @@ versions of the method.
 ```cpp
 template <typename T>
 const T& SomeClass<T>::someComplexMethod(const std::size_t index) const {
-    return const_cast<T&>(static_cast<const T&>(*this).at(index));
+    return const_cast<T&>(static_cast<const SomeClass<T>&>(*this).at(index));
 }
 ``` 
 

@@ -157,7 +157,7 @@ they can be for those who are not yet familiar with it.
 But now that I have started this project, I'm not sure if I should
 continue using this approach or not. I can't really stand myself
 labelling this project as "C++" when it is not really C++ at all.
-You might have noticed that ownsership management is done manually
+You might have noticed that ownership management is done manually
 instead of using smart pointers, and there are a lot of `new` and
 `delete` statements. You might also have noticed that I'm not using
 any advanced C++ features like move semantics, lambda expressions,

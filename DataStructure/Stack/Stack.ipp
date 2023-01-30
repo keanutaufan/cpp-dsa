@@ -9,53 +9,53 @@
 namespace DSA {
     template <typename T>
     Stack<T>::Stack() {
-        this->top = nullptr;
-        this->stackSize = 0;
+        m_top = nullptr;
+        m_size = 0;
     }
 
     template <typename T>
     void Stack<T>::push(const T &value) {
-        StackContainer<T>* newNode = new StackContainer<T>();
+        StackNode<T>* newNode = new StackNode<T>();
         newNode->data = value;
-        newNode->next = this->top;
-        this->top = newNode;
-        this->stackSize++;
+        newNode->next = m_top;
+        m_top = newNode;
+        m_size++;
     }
 
     template <typename T>
     void Stack<T>::pop() {
-        if (this->isEmpty()) {
+        if (is_empty()) {
             throw std::underflow_error("Stack is empty.");
         }
 
-        StackContainer<T>* previousTopElement = this->top;
-        this->top = this->top->next;
+        StackNode<T>* previousTopElement = m_top;
+        m_top = m_top->next;
         delete previousTopElement;
-        this->stackSize--;
+        m_size--;
     }
 
     template <typename T>
     inline const T& Stack<T>::peek() {
-        return this->top->data;
+        return m_top->data;
     }
 
     template <typename T>
-    inline bool Stack<T>::isEmpty() {
-        return this->stackSize == 0;
+    inline bool Stack<T>::is_empty() {
+        return m_size == 0;
     }
 
     template <typename T>
     inline std::size_t Stack<T>::size() {
-        return this->stackSize;
+        return m_size;
     }
 
     template <typename T>
     Stack<T>::~Stack() {
-        while (!this->isEmpty()) {
-            StackContainer<T>* previousTopElement = this->top;
-            this->top = this->top->next;
+        while (!is_empty()) {
+            StackNode<T>* previousTopElement = m_top;
+            m_top = m_top->next;
             delete previousTopElement;
-            this->stackSize--;
+            m_size--;
         }
     }
 }

@@ -26,7 +26,7 @@ int main() {
 
     // Print out stack elements
     std::cout << "Stack elements: " << std::endl;
-    while (!stack.isEmpty()) {
+    while (!stack.is_empty()) {
         std::cout << stack.size() << " : " << stack.peek() << std::endl;
         stack.pop();
     }

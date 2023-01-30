@@ -9,13 +9,13 @@ namespace DSA {
     class Stack {
     private:
         template <typename U>
-        struct StackContainer {
+        struct StackNode {
             U data;
-            StackContainer<U>* next;
+            StackNode<U>* next;
         };
 
-        StackContainer<T>* top;
-        std::size_t stackSize;
+        StackNode<T>* m_top;
+        std::size_t m_size;
 
     public:
         Stack();
@@ -25,7 +25,7 @@ namespace DSA {
 
         const T& peek();
 
-        bool isEmpty();
+        bool is_empty();
         std::size_t size();
 
         ~Stack();

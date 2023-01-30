@@ -97,9 +97,9 @@ struct QueueContainer {
 The deque class will be defined as a template class, which will allow the user
 to use the deque with any data type. The class will have the following private
 members:
-- `head` - A pointer to the front of the queue.
-- `tail` - A pointer to the back of the queue.
-- `queueSize` - The size of the queue.
+- `m_head` - A pointer to the front of the queue.
+- `m_tail` - A pointer to the back of the queue.
+- `m_size` - The size of the queue.
 
 The class will have the following public methods:
 - `Queue` - The constructor for the queue.
@@ -107,7 +107,7 @@ The class will have the following public methods:
 - `dequeue` - Removes the element at the front of the queue.
 - `peek_front` - Returns the element at the front of the queue.
 - `peek_back` - Returns the element at the back of the queue.
-- `isEmpty` - Returns true if the queue is empty, false otherwise.
+- `is_empty` - Returns true if the queue is empty, false otherwise.
 - `size` - Returns the size of the queue.
 - `~Queue` - The destructor for the queue.
 
@@ -121,9 +121,9 @@ private:
         QueueContainer<U>* next;
     };
 
-    QueueContainer<T>* head;
-    QueueContainer<T>* tail;
-    std::size_t queueSize;
+    QueueContainer<T>* m_head;
+    QueueContainer<T>* m_tail;
+    std::size_t m_size;
 
 public:   
     Queue();
@@ -131,11 +131,11 @@ public:
     void enqueue(const T& value);
     void dequeue();
         
-    const T& peek_front();
-    const T& peek_back();
+    const T& peek_front() const;
+    const T& peek_back() const;
 
-    bool isEmpty();
-    std::size_t size();
+    bool is_empty() const;
+    std::size_t size() const;
 
     ~Queue();
 };
@@ -143,15 +143,15 @@ public:
 
 ### Constructor
 
-The constructor for the queue will initialize the `head` and `tail` pointers
-to `nullptr` and the `queueSize` to `0`.
+The constructor for the queue will initialize the `m_head` and `m_tail` pointers
+to `nullptr` and the `m_size` to `0`.
 
 ```cpp
 template <typename T>
 Queue<T>::Queue() {
-    this->head = nullptr;
-    this->tail = nullptr;
-    this->queueSize = 0;
+    m_head = nullptr;
+    m_tail = nullptr;
+    m_size = 0;
 }
 ```
 
@@ -160,7 +160,7 @@ Queue<T>::Queue() {
 The `enqueue` method will add an element to the back of the queue. The method
 will create a new node with the given value and link it to the back of the
 queue. If the queue is empty, the new node will be both the front and back of
-the queue. The `queueSize` will be incremented by 1.
+the queue. The `m_size` will be incremented by 1.
 
 ```cpp
 template <typename T>
@@ -169,15 +169,15 @@ void Queue<T>::enqueue(const T& value) {
     newElement->data = value;
     newElement->next = nullptr;
 
-    if (this->isEmpty()) {
-        this->head = newElement;
-        this->tail = newElement;
+    if (is_empty()) {
+        m_head = newElement;
+        m_tail = newElement;
     } else {
-        this->tail->next = newElement;
-        this->tail = newElement;
+        m_tail->next = newElement;
+        m_tail = newElement;
     }
 
-    this->queueSize++;
+    m_size++;
 }
 ```
 
@@ -187,23 +187,23 @@ The `dequeue` method will remove the element at the front of the queue. The
 method will check if the queue is empty. If the queue is empty, the method
 will throw an `std::underflow_error` exception. If the queue is not empty, the
 method will remove the front element of the queue and delete it. If the queue
-is now empty, the `head` and `tail` pointers will be set to `nullptr`. The
-`queueSize` will be decremented by 1.
+is now empty, the `m_head` and `m_tail` pointers will be set to `nullptr`. The
+`m_size` will be decremented by 1.
 
 ```cpp
 template <typename T>
 void Queue<T>::dequeue() {
-    if (this->isEmpty()) {
+    if (is_empty()) {
         throw std::underflow_error("Pop is called on an empty queue.");
     }
 
-    QueueContainer<T>* newHead = this->head->next;
-    delete this->head;
-    this->head = newHead;
-    this->queueSize--;
+    QueueContainer<T>* newHead = m_head->next;
+    delete m_head;
+    m_head = newHead;
+    m_size--;
 
-    if (this->isEmpty()) {
-        this->tail = nullptr;
+    if (is_empty()) {
+        m_tail = nullptr;
     }
 }
 ```
@@ -214,8 +214,8 @@ The `peek_front` method will return the element at the front of the queue.
 
 ```cpp
 template <typename T>
-inline const T& Queue<T>::peek_front() {
-    return this->head->data;
+inline const T& Queue<T>::peek_front() const {
+    return m_head->data;
 }
 ```
 
@@ -225,19 +225,19 @@ The `peek_back` method will return the element at the back of the queue.
 
 ```cpp
 template <typename T>
-inline const T& Queue<T>::peek_back() {
-    return this->tail->data;
+inline const T& Queue<T>::peek_back() const {
+    return m_tail->data;
 }
 ```
 
-### `isEmpty`
+### `is_empty`
 
-The `isEmpty` method will return true if the queue is empty, false otherwise.
+The `is_empty` method will return true if the queue is empty, false otherwise.
 
 ```cpp
 template <typename T>
-inline bool Queue<T>::isEmpty() {
-    return this->queueSize == 0;
+inline bool Queue<T>::is_empty() const {
+    return m_size == 0;
 }
 ```
 
@@ -247,8 +247,8 @@ The `size` method will return the size of the queue.
 
 ```cpp
 template <typename T>
-inline std::size_t Queue<T>::size() {
-    return this->queueSize;
+inline std::size_t Queue<T>::size() const {
+    return m_size;
 }
 ```
 
@@ -264,11 +264,11 @@ loop will stop when the queue is empty.
 ```cpp
 template <typename T>
 Queue<T>::~Queue() {
-    while (!this->isEmpty()) {
-        QueueContainer<T>* nextElement = this->head->next;
-        delete this->head;
-        this->head = nextElement;
-        this->queueSize--;
+    while (!m_is_empty()) {
+        QueueContainer<T>* nextElement = m_head->next;
+        delete m_head;
+        m_head = nextElement;
+        m_size--;
     }
 }
 ```

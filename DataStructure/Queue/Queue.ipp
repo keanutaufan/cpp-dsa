@@ -33,7 +33,7 @@ namespace DSA {
 
     template <typename T>
     void Queue<T>::dequeue() {
-        if (m_size == 0) {
+        if (is_empty()) {
             throw std::underflow_error("Pop is called on an empty queue.");
         }
 

@@ -14,9 +14,9 @@ namespace DSA {
             DequeContainer<U>* prev;
         };
 
-        DequeContainer<T>* head;
-        DequeContainer<T>* tail;
-        std::size_t dequeSize;
+        DequeContainer<T>* m_head;
+        DequeContainer<T>* m_tail;
+        std::size_t m_size;
 
     public:
         Deque();
@@ -29,7 +29,7 @@ namespace DSA {
         const T& peek_front();
         const T& peek_back();
 
-        bool isEmpty();
+        bool is_empty();
         std::size_t size();
 
         ~Deque();

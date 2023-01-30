@@ -8,9 +8,9 @@
 namespace DSA {
     template <typename T>
     Deque<T>::Deque() {
-        this->head = nullptr;
-        this->tail = nullptr;
-        this->dequeSize = 0;
+        m_head = nullptr;
+        m_tail = nullptr;
+        m_size = 0;
     }
 
     template <typename T>
@@ -20,17 +20,17 @@ namespace DSA {
         newElement->next = nullptr;
         newElement->prev = nullptr;
 
-        if (this->isEmpty()) {
-            this->head = newElement;
-            this->tail = newElement;
+        if (is_empty()) {
+            m_head = newElement;
+            m_tail = newElement;
         }
         else {
-            newElement->next = this->head;
-            this->head->prev = newElement;
-            this->head = newElement;
+            newElement->next = m_head;
+            m_head->prev = newElement;
+            m_head = newElement;
         }
 
-        this->dequeSize++;
+        m_size++;
     }
 
     template <typename T>
@@ -40,82 +40,82 @@ namespace DSA {
         newElement->next = nullptr;
         newElement->prev = nullptr;
 
-        if (this->isEmpty()) {
-            this->head = newElement;
-            this->tail = newElement;
+        if (is_empty()) {
+            m_head = newElement;
+            m_tail = newElement;
         }
         else {
-            newElement->prev = this->tail;
-            this->tail->next = newElement;
-            this->tail = newElement;
+            newElement->prev = m_tail;
+            m_tail->next = newElement;
+            m_tail = newElement;
         }
 
-        this->dequeSize++;
+        m_size++;
     }
 
     template <typename T>
     void Deque<T>::pop_front() {
-        if (this->dequeSize == 0) {
+        if (m_size == 0) {
             throw std::underflow_error("Deque is empty.");
         }
-        else if (this->dequeSize == 1) {
-            delete this->head;
-            this->head = nullptr;
-            this->tail = nullptr;
+        else if (m_size == 1) {
+            delete m_head;
+            m_head = nullptr;
+            m_tail = nullptr;
         }
         else {
-            DequeContainer<T>* newHead = this->head->next;
+            DequeContainer<T>* newHead = m_head->next;
             newHead->prev = nullptr;
-            delete this->head;
-            this->head = newHead;
+            delete m_head;
+            m_head = newHead;
         }
 
-        this->dequeSize--;
+        m_size--;
     }
 
     template <typename T>
     void Deque<T>::pop_back() {
-        if (this->dequeSize == 0) {
+        if (m_size == 0) {
             throw std::underflow_error("Deque is empty.");
         }
-        else if (this->dequeSize == 1) {
-            delete this->tail;
-            this->head = nullptr;
-            this->tail = nullptr;
+        else if (m_size == 1) {
+            delete m_tail;
+            m_head = nullptr;
+            m_tail = nullptr;
         }
         else {
-            DequeContainer<T>* newTail = this->tail->prev;
+            DequeContainer<T>* newTail = m_tail->prev;
             newTail->next = nullptr;
-            delete this->tail;
-            this->tail = newTail;
+            delete m_tail;
+            m_tail = newTail;
         }
 
-        this->dequeSize--;
+        m_size--;
     }
 
     template <typename T>
     inline const T& Deque<T>::peek_front() {
-        return this->head->data;
+        return m_head->data;
     }
 
     template <typename T>
     inline const T& Deque<T>::peek_back() {
-        return this->tail->data;
+        return m_tail->data;
     }
 
     template <typename T>
-    inline bool Deque<T>::isEmpty() {
-        return this->dequeSize == 0;
+    inline bool Deque<T>::is_empty() {
+        return m_size == 0;
     }
 
     template <typename T>
     inline std::size_t Deque<T>::size() {
-        return this->dequeSize;
+        return m_size;
     }
 
     template <typename T>
     Deque<T>::~Deque() {
-        DequeContainer<T>* currentElement = this->head;
+        DequeContainer<T>* currentElement = m_head;
         while (currentElement != nullptr) {
             DequeContainer<T>* nextElement = currentElement->next;
             delete currentElement;

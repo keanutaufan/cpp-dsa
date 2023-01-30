@@ -8,14 +8,14 @@ namespace DSA {
     class Deque {
     private:
         template <typename U>
-        struct DequeContainer {
+        struct DequeNode {
             U data;
-            DequeContainer<U>* next;
-            DequeContainer<U>* prev;
+            DequeNode<U>* next;
+            DequeNode<U>* prev;
         };
 
-        DequeContainer<T>* m_head;
-        DequeContainer<T>* m_tail;
+        DequeNode<T>* m_head;
+        DequeNode<T>* m_tail;
         std::size_t m_size;
 
     public:

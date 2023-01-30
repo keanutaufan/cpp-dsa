@@ -15,7 +15,7 @@ namespace DSA {
 
     template <typename T>
     void Deque<T>::push_front(const T& value) {
-        DequeContainer<T>* newElement = new DequeContainer<T>();
+        DequeNode<T>* newElement = new DequeNode<T>();
         newElement->data = value;
         newElement->next = nullptr;
         newElement->prev = nullptr;
@@ -35,7 +35,7 @@ namespace DSA {
 
     template <typename T>
     void Deque<T>::push_back(const T& value) {
-        DequeContainer<T>* newElement = new DequeContainer<T>();
+        DequeNode<T>* newElement = new DequeNode<T>();
         newElement->data = value;
         newElement->next = nullptr;
         newElement->prev = nullptr;
@@ -64,7 +64,7 @@ namespace DSA {
             m_tail = nullptr;
         }
         else {
-            DequeContainer<T>* newHead = m_head->next;
+            DequeNode<T>* newHead = m_head->next;
             newHead->prev = nullptr;
             delete m_head;
             m_head = newHead;
@@ -84,7 +84,7 @@ namespace DSA {
             m_tail = nullptr;
         }
         else {
-            DequeContainer<T>* newTail = m_tail->prev;
+            DequeNode<T>* newTail = m_tail->prev;
             newTail->next = nullptr;
             delete m_tail;
             m_tail = newTail;
@@ -115,9 +115,9 @@ namespace DSA {
 
     template <typename T>
     Deque<T>::~Deque() {
-        DequeContainer<T>* currentElement = m_head;
+        DequeNode<T>* currentElement = m_head;
         while (currentElement != nullptr) {
-            DequeContainer<T>* nextElement = currentElement->next;
+            DequeNode<T>* nextElement = currentElement->next;
             delete currentElement;
             currentElement = nextElement;
         }

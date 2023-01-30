@@ -55,7 +55,7 @@ involves a million `imul` instructions, despite them having the same number
 of operations. 
 
 The same thing applies to the data structures. A hash table may promise $O(1)$
-time complexity amortized for lookups, but the hash table needs to perform
+time complexity amortized for insertion, but the hash table needs to perform
 hashing and collision resolution, which is very expensive. In some cases,
 the hash table may be slower than, for example, a balanced binary search tree,
 despite the hash table having a better time complexity.

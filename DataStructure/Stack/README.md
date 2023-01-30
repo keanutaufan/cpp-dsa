@@ -23,7 +23,7 @@ A stack data structure supports at least these basic operations:
 
 - `push` - Adds an element to the top of the stack.
 - `pop` - Removes the element at the top of the stack.
-- `peek` or `top` - Returns the element at the top of the stack.
+- `peek` or `m_top` - Returns the element at the top of the stack.
 - `isEmpty` - Returns true if the stack is empty, false otherwise.
 
 Some implementations of a stack may also keep track of the size of the stack,
@@ -82,9 +82,9 @@ member within the stack class to prevent the user from accessing the node direct
 
 ```cpp
 template <typename T>
-struct StackContainer {
+struct StackNode {
     T data;
-    StackContainer<T>* next;
+    StackNode<T>* next;
 };
 ```
 
@@ -93,15 +93,15 @@ struct StackContainer {
 The stack class will be defined as a template class, which will allow the user
 to use the stack with any data type. The class will have the following private
 members:
-- `top` - A pointer to the top of the stack.
-- `stackSize` - The size of the stack.
+- `m_top` - A pointer to the top of the stack.
+- `m_size` - The size of the stack.
 
 The class will have the following public methods:
 - `Stack` - The constructor for the stack class.
 - `push` - Adds an element to the top of the stack.
 - `pop` - Removes the element at the top of the stack.
 - `peek` - Returns the element at the top of the stack.
-- `isEmpty` - Returns true if the stack is empty, false otherwise.
+- `is_empty` - Returns true if the stack is empty, false otherwise.
 - `size` - Returns the size of the stack.
 - `~Stack` - The destructor for the stack class.
 
@@ -111,13 +111,13 @@ template <typename T>
 class Stack {
 private:
     template <typename U>
-    struct StackContainer {
+    struct StackNode {
         U data;
-        StackContainer<U>* next;
+        StackNode<U>* next;
     };
 
-    StackContainer<T>* top;
-    std::size_t stackSize;
+    StackNode<T>* m_top;
+    std::size_t m_size;
 
 public:
     Stack();
@@ -125,10 +125,10 @@ public:
     void push(const T& value);
     void pop();
 
-    const T& peek();
+    const T& peek() const;
 
-    bool isEmpty();
-    std::size_t size();
+    bool isEmpty() const;
+    std::size_t size() const;
 
     ~Stack();
 };
@@ -136,14 +136,14 @@ public:
 
 ### Constructor
 
-The constructor for the stack class will initialize the `top` pointer to `nullptr`
-and the `stackSize` to `0`.
+The constructor for the stack class will initialize the `m_top` pointer to `nullptr`
+and the `m_size` to `0`.
 
 ```cpp
 template <typename T>
 Stack<T>::Stack() {
-    this->top = nullptr;
-    this->stackSize = 0;
+    m_top = nullptr;
+    m_size = 0;
 }
 ```
 
@@ -151,17 +151,17 @@ Stack<T>::Stack() {
 
 The `push` method will add an element to the top of the stack. The method will
 create a new node with the data passed in as a parameter and link it to the top
-of the stack. The method will then update the `top` pointer to point to the new
-node and increment the `stackSize` by 1.
+of the stack. The method will then update the `m_top` pointer to point to the new
+node and increment the `m_size` by 1.
 
 ```cpp
 template <typename T>
 void Stack<T>::push(const T& value) {
-    StackContainer<T>* newNode = new StackContainer<T>;
+    StackNode<T>* newNode = new StackNode<T>;
     newNode->data = value;
-    newNode->next = this->top;
-    this->top = newNode;
-    this->stackSize++;
+    newNode->next = m_top;
+    m_top = newNode;
+    m_size++;
 }
 ```
 
@@ -170,55 +170,56 @@ void Stack<T>::push(const T& value) {
 The `pop` method will remove the element at the top of the stack. The method will
 check if the stack is empty, if it is, it will throw an exception. If the stack
 is not empty, the method will create a temporary pointer to the top of the stack
-and update the `top` pointer to point to the next node in the stack. The method
-will then delete the temporary pointer and decrement the `stackSize` by 1.
+and update the `m_top` pointer to point to the next node in the stack. The method
+will then delete the temporary pointer and decrement the `m_size` by 1.
 
 ```cpp
 template <typename T>
 void Stack<T>::pop() {
-    if (this->isEmpty()) {
+    if (isEmpty()) {
         throw std::underflow_error("Stack is empty.");
     }
 
-    StackContainer<T>* previousTopElement = this->top;
-    this->top = this->top->next;
+    StackNode<T>* previousTopElement = m_top;
+    m_top = m_top->next;
     delete previousTopElement;
-    this->stackSize--;
+    m_size--;
 }
 ```
 
 ### `peek`
 
 The `peek` method will return the element at the top of the stack.
+
 ```cpp
 template <typename T>
-inline const T& Stack<T>::peek() {
-    return this->top->data;
+inline const T& Stack<T>::peek() const {
+    return m_top->data;
 }
 ```
 
-### `isEmpty`
+### `is_empty`
 
-The `isEmpty` method will return true if the stack is empty and false otherwise. The
-method will check if the `stackSize` is 0, if it is, it will return true, otherwise
+The `is_empty` method will return true if the stack is empty and false otherwise. The
+method will check if the `m_size` is 0, if it is, it will return true, otherwise
 it will return false.
 
 ```cpp
 template <typename T>
-inline bool Stack<T>::isEmpty() {
-    return this->stackSize == 0;
+inline bool Stack<T>::is_empty() const {
+    return m_size == 0;
 }
 ```
 
 ### `size`
 
 The `size` method will return the size of the stack. The method will return the
-`stackSize` value.
+`m_size` value.
 
 ```cpp
 template <typename T>
-inline std::size_t Stack<T>::size() {
-    return this->stackSize;
+inline std::size_t Stack<T>::size() const {
+    return m_size;
 }
 ```
 
@@ -226,18 +227,18 @@ inline std::size_t Stack<T>::size() {
 
 The destructor for the stack class will delete all of the nodes in the stack. The
 method will create a temporary pointer to the top of the stack and update the
-`top` pointer to point to the next node in the stack. The method will then delete
-the temporary pointer and decrement the `stackSize` by 1. The method will continue
+`m_top` pointer to point to the next node in the stack. The method will then delete
+the temporary pointer and decrement the `m_size` by 1. The method will continue
 to do this until the stack is empty.
 
 ```cpp
 template <typename T>
 Stack<T>::~Stack() {
-    while (!this->isEmpty()) {
-        StackContainer<T>* previousTopElement = this->top;
-        this->top = this->top->next;
+    while (!isEmpty()) {
+        StackNode<T>* previousTopElement = m_top;
+        m_top = m_top->next;
         delete previousTopElement;
-        this->stackSize--;
+        m_size--;
     }
 }
 ```

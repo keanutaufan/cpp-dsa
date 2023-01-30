@@ -94,22 +94,22 @@ namespace DSA {
     }
 
     template <typename T>
-    inline const T& Deque<T>::peek_front() {
+    inline const T& Deque<T>::peek_front() const {
         return m_head->data;
     }
 
     template <typename T>
-    inline const T& Deque<T>::peek_back() {
+    inline const T& Deque<T>::peek_back() const {
         return m_tail->data;
     }
 
     template <typename T>
-    inline bool Deque<T>::is_empty() {
+    inline bool Deque<T>::is_empty() const {
         return m_size == 0;
     }
 
     template <typename T>
-    inline std::size_t Deque<T>::size() {
+    inline std::size_t Deque<T>::size() const {
         return m_size;
     }
 

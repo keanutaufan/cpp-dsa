@@ -8,13 +8,13 @@ namespace DSA {
     class Queue {
     private:
         template <typename U>
-        struct QueueContainer {
+        struct QueueNode {
             U data;
-            QueueContainer<U>* next;
+            QueueNode<U>* next;
         };
 
-        QueueContainer<T>* m_head;
-        QueueContainer<T>* m_tail;
+        QueueNode<T>* m_head;
+        QueueNode<T>* m_tail;
         std::size_t m_size;
 
     public:   

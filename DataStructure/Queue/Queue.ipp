@@ -15,7 +15,7 @@ namespace DSA {
 
     template <typename T>
     void Queue<T>::enqueue(const T& value) {
-        QueueContainer<T>* newElement = new QueueContainer<T>();
+        QueueNode<T>* newElement = new QueueNode<T>();
         newElement->data = value;
         newElement->next = nullptr;
         
@@ -37,7 +37,7 @@ namespace DSA {
             throw std::underflow_error("Pop is called on an empty queue.");
         }
 
-        QueueContainer<T>* newHead = m_head->next;
+        QueueNode<T>* newHead = m_head->next;
         delete m_head;
         m_head = newHead;
         m_size--;
@@ -71,7 +71,7 @@ namespace DSA {
     template <typename T>
     Queue<T>::~Queue() {
         while (!is_empty()) {
-            QueueContainer<T>* nextElement = m_head->next;
+            QueueNode<T>* nextElement = m_head->next;
             delete m_head;
             m_head = nextElement;
             m_size--;

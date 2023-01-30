@@ -86,9 +86,9 @@ member within the deque class to prevent the user from accessing the node direct
 
 ```cpp
 template <typename T>
-struct QueueContainer {
+struct QueueNode {
     T data;
-    QueueContainer<T>* next;
+    QueueNode<T>* next;
 };
 ```
 
@@ -116,13 +116,13 @@ template <typename T>
 class Queue {
 private:
     template <typename U>
-    struct QueueContainer {
+    struct QueueNode {
         U data;
-        QueueContainer<U>* next;
+        QueueNode<U>* next;
     };
 
-    QueueContainer<T>* m_head;
-    QueueContainer<T>* m_tail;
+    QueueNode<T>* m_head;
+    QueueNode<T>* m_tail;
     std::size_t m_size;
 
 public:   
@@ -165,7 +165,7 @@ the queue. The `m_size` will be incremented by 1.
 ```cpp
 template <typename T>
 void Queue<T>::enqueue(const T& value) {
-    QueueContainer<T>* newElement = new QueueContainer<T>;
+    QueueNode<T>* newElement = new QueueNode<T>;
     newElement->data = value;
     newElement->next = nullptr;
 
@@ -197,7 +197,7 @@ void Queue<T>::dequeue() {
         throw std::underflow_error("Pop is called on an empty queue.");
     }
 
-    QueueContainer<T>* newHead = m_head->next;
+    QueueNode<T>* newHead = m_head->next;
     delete m_head;
     m_head = newHead;
     m_size--;
@@ -265,7 +265,7 @@ loop will stop when the queue is empty.
 template <typename T>
 Queue<T>::~Queue() {
     while (!m_is_empty()) {
-        QueueContainer<T>* nextElement = m_head->next;
+        QueueNode<T>* nextElement = m_head->next;
         delete m_head;
         m_head = nextElement;
         m_size--;

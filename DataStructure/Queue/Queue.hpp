@@ -13,9 +13,9 @@ namespace DSA {
             QueueContainer<U>* next;
         };
 
-        QueueContainer<T>* head;
-        QueueContainer<T>* tail;
-        std::size_t queueSize;
+        QueueContainer<T>* m_head;
+        QueueContainer<T>* m_tail;
+        std::size_t m_size;
 
     public:   
         Queue();
@@ -26,9 +26,8 @@ namespace DSA {
         const T& peek_front();
         const T& peek_back();
 
-        bool isEmpty();
+        bool is_empty();
         std::size_t size();
-
 
         ~Queue();
     };

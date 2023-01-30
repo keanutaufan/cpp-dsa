@@ -8,9 +8,9 @@
 namespace DSA {
     template <typename T>
     Queue<T>::Queue() {
-        this->head = nullptr;
-        this->tail = nullptr;
-        this->queueSize = 0;
+        m_head = nullptr;
+        m_tail = nullptr;
+        m_size = 0;
     }
 
     template <typename T>
@@ -19,62 +19,62 @@ namespace DSA {
         newElement->data = value;
         newElement->next = nullptr;
         
-        if (this->isEmpty()) {
-            this->head = newElement;
-            this->tail = newElement;
+        if (is_empty()) {
+            m_head = newElement;
+            m_tail = newElement;
         }
         else {
-            this->tail->next = newElement;
-            this->tail = newElement;
+            m_tail->next = newElement;
+            m_tail = newElement;
         }
 
-        this->queueSize++;
+        m_size++;
     }
 
     template <typename T>
     void Queue<T>::dequeue() {
-        if (this->queueSize == 0) {
+        if (m_size == 0) {
             throw std::underflow_error("Pop is called on an empty queue.");
         }
 
-        QueueContainer<T>* newHead = this->head->next;
-        delete this->head;
-        this->head = newHead;
-        this->queueSize--;
+        QueueContainer<T>* newHead = m_head->next;
+        delete m_head;
+        m_head = newHead;
+        m_size--;
 
-        if (this->isEmpty()) {
-            this->tail = nullptr;
+        if (is_empty()) {
+            m_tail = nullptr;
         }
     }
 
     template <typename T>
     inline const T& Queue<T>::peek_front() {
-        return this->head->data;
+        return m_head->data;
     }
 
     template <typename T>
     inline const T& Queue<T>::peek_back() {
-        return this->tail->data;
+        return m_tail->data;
     }
 
     template <typename T>
-    inline bool Queue<T>::isEmpty() {
-        return this->queueSize == 0;
+    inline bool Queue<T>::is_empty() {
+        return m_size == 0;
     }
 
     template <typename T>
     inline std::size_t Queue<T>::size() {
-        return this->queueSize;
+        return m_size;
     }
 
 
     template <typename T>
     Queue<T>::~Queue() {
-        while (!this->isEmpty()) {
-            QueueContainer<T>* nextElement = this->head->next;
-            delete this->head;
-            this->head = nextElement;
-            this->queueSize--;
+        while (!is_empty()) {
+            QueueContainer<T>* nextElement = m_head->next;
+            delete m_head;
+            m_head = nextElement;
+            m_size--;
         }
     }
 }

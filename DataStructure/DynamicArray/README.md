@@ -193,10 +193,15 @@ public:
     void shrink_to_fit();
 
     T& front();
+    const T& front() const;
     T& back();
+    const T& back() const;
     T& at(const std::size_t index);
+    const T& at(const std::size_t index) const;
     T& operator[](const std::size_t index);
+    const T& operator[](const std::size_t index) const;
     T* data();
+    const T* data() const;
 
     ~DynamicArray();
 };
@@ -625,6 +630,137 @@ void DynamicArray<T>::shrink_to_fit() {
 }
 ```
 
+### `const` and non-`const` Accessor
+
+Notice that our dynamic array class has accessor methods that can act as
+both a getter and a setter. For example, our `operator[]` method can be
+used to get the element at a certain index, or it can be used to set the
+element at a certain index. This is because the `operator[]` method is
+overloaded to return a reference to the element at a certain index. The
+same goes for `at` and `front` and `back` methods. However, we usually
+want to have a `const` version of the accessor methods that can only be
+used to get the element at a certain index, and not to set the element at
+a certain index To accomplish this, we can overload the accessor methods
+to return a `const` reference to the element at a certain index and 
+mark it as a `const` method.
+
+You might think, why do we need to overload the accessor methods to return
+a `const` reference to the element at a certain index, since if we call
+the accessor methods on a `const` object, the compiler will automatically
+call the `const` version of the accessor methods. This is true, but the
+compiler will not call the `const` version of the accessor methods if we
+call the accessor methods on a non-`const` object. We might want different
+behaviour for the `const` and non-`const` versions of the accessor methods.
+This is not the case for our dynamic array class, but there is another
+reason why we need to overload the accessor methods to return a `const`
+reference to the element at a certain index and mark it as a `const`.
+
+Consider we want to access the element at a certain index in a dynamic
+array by using the `operator[]` method on a `const` method of a class.
+
+```cpp
+template <typename T>
+const T& SomeClass<T>::get_element(const std::size_t index) const {
+    return someDynamicArray[index];
+}
+```
+
+The code will raise a compilation error, since the `operator[]` method
+is not a `const` method, while the caller of the `operator[]` method is a
+`const` method. We can mark the `operator[]` method as a `const` or
+remove the `const` from the caller of the `operator[]` method. However,
+this does not solve the problem. The compiler may complain that the
+`operator[]` method is not a `const` method, even if we mark the
+`operator[]` method as a `const` method since it can modify the element
+at a certain index. Not marking the `get_element` method as a `const`
+method will fix the compilation error, but it will not fix our problem
+either. The reason that we use `const` method in the first place is
+to enforce const-correctness. Removing the `const` from the caller of the
+`operator[]` method will defeat the purpose of using `const` method in
+the first place.
+
+To solve this problem, we can overload the `operator[]` method to return
+a `const` reference to the element at a certain index and mark it as a
+`const` method. This will allow us to call the `operator[]` method on a
+`const` object, and the compiler will call the `const` version of the
+`operator[]` method.
+
+```cpp
+template <typename T>
+const T& DynamicArray<T>::operator[](const std::size_t index) const {
+    return m_buffer[index];
+}
+```
+
+Now, while this did solve our problem, we still have another concern. The
+`operator[]` method is a simple method which just returns the element at
+a certain index, so it is not a big deal to duplicate the code for the
+`const` and non-`const` versions of the `operator[]` method. However, if
+we have a more complex operation in a method, we might want to avoid
+duplicating the code for the `const` and non-`const` versions of the
+method. 
+
+```cpp
+template <typename T>
+const T& SomeClass<T>::someComplexMethod(const std::size_t index) const {
+    const T& element = someDynamicArray.at(index);
+    // Do some complex operation done in the non-const version of the method
+    // ...
+    return element;
+}
+```
+
+If we have like 100 lines of code in the non-`const` version of the
+method, we will have to duplicate the code for the `const` version of the
+method. This is not ideal. We can avoid duplicating the code for the
+`const` and non-`const` versions of the method by `const_cast`-ing
+the method. `const_cast` is a C++ keyword that can be used to cast away
+the `const` qualifier of a variable. While it is recommended to avoid using
+`const_cast` whenever possible, Scott Meyers in his book *"Effective C++, 3rd ed."*
+in item 3 regarding *"avoid duplication in `const` and non-`const` member function"* 
+made an exception for this particular case. In this case, we can use
+`const_cast` to avoid duplicating the code for the `const` and non-`const`
+versions of the method.
+
+```cpp
+template <typename T>
+const T& SomeClass<T>::someComplexMethod(const std::size_t index) const {
+    return const_cast<T&>(static_cast<const T&>(*this).at(index));
+}
+``` 
+
+While this approach is, arguably, ugly, (not to mention that it does both
+a `static_cast` and a `const_cast` conversion in one statement), it actually
+has low overhead and it's not that bad since we are only using it in a very
+specific situation. C++17 introduced a new method called `std::as_const`
+which is considered as a more elegant solution to this problem. 
+
+```cpp
+template <typename T>
+const T& SomeClass<T>::someComplexMethod(const std::size_t index) const {
+    return const_cast<T&>(std::as_const(*this).at(index));
+}
+```
+
+Another approach that you can try is to simply make the buffer as a
+`mutable` member variable. This will allow us to call the `operator[]`
+method on a `const` object, and the compiler will call the `const` version
+of the `operator[]` method. There is no need to create separate methods
+for the `const` and non-`const` versions of the `operator[]` method.
+However, this approach is not recommended since it does not solve
+the problem regarding the `const`-correctness of the class.
+
+You are free to use whichever approach you prefer, since each of them has
+its own pros and cons. However, I will use the `const_cast` approach in
+this repo, since I (at the moment) want to minimize the use of C++17
+features. I will only write the code for the `const` version of the method
+in this explanation, since it is the one that will contain the actual logic
+of the method. The non-`const` version of the method will simply call the
+`const` version of the method and cast away the `const` qualifier of the
+return value. If you want to see the full code, you can check the
+`DynamicArray` class implementation in the `DynamicArray.ipp` file.
+
+
 ### `front`
 
 The `front` method is used to get the first element in the array. The
@@ -634,7 +770,7 @@ be returned.
 
 ```cpp
 template <typename T>
-T& DynamicArray<T>::front() {
+const T& DynamicArray<T>::front() const {
     if (is_empty()) {
         throw std::out_of_range("Array is empty.");
     }
@@ -652,7 +788,7 @@ be returned.
 
 ```cpp
 template <typename T>
-T& DynamicArray<T>::back() {
+const T& DynamicArray<T>::back() const {
     if (is_empty()) {
         throw std::out_of_range("Array is empty.");
     }
@@ -670,7 +806,7 @@ thrown. Otherwise, the element at the given index will be returned.
 
 ```cpp
 template <typename T>
-T& DynamicArray<T>::at(const std::size_t index) {
+const T& DynamicArray<T>::at(const std::size_t index) const {
     if (index < 0 || index >= m_size) {
         throw std::out_of_range("Index out of range.");
     }
@@ -693,7 +829,7 @@ behavior of the method is undefined.
 
 ```cpp
 template <typename T>
-inline T& DynamicArray<T>::operator[](const std::size_t index) {
+inline const T& DynamicArray<T>::operator[](const std::size_t index) const {
     return m_buffer[index];
 }
 ```
@@ -707,7 +843,7 @@ directly.
 
 ```cpp
 template <typename T>
-inline T* DynamicArray<T>::data() {
+inline const T* DynamicArray<T>::data() const {
     return m_buffer;
 }
 ```
@@ -756,3 +892,4 @@ things that you can do to improve the dynamic array implementation.
 - [Dynamic Array - Wikipedia](https://en.wikipedia.org/wiki/Dynamic_array)
 - [std::vector - cppreference.com](https://en.cppreference.com/w/cpp/container/vector)
 - [C++ Standard Draft - GitHub](https://github.com/cplusplus/draft)
+- [Scott Meyers - Effective C++, 3rd ed.](https://www.aristeia.com/books.html)

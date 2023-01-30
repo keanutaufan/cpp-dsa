@@ -42,10 +42,15 @@ namespace DSA {
         void shrink_to_fit();
 
         T& front();
+        const T& front() const;
         T& back();
+        const T& back() const;
         T& at(const std::size_t index);
+        const T& at(const std::size_t index) const;
         T& operator[](const std::size_t index);
+        const T& operator[](const std::size_t index) const;
         T* data();
+        const T* data() const;
 
         ~DynamicArray();
     };

@@ -186,6 +186,11 @@ namespace DSA {
 
     template <typename T>
     T& DynamicArray<T>::front() {
+        return const_cast<T&>(static_cast<const T&>(*this).front());
+    }
+
+    template <typename T>
+    const T& DynamicArray<T>::front() const {
         if (is_empty()) {
             throw std::out_of_range("Array is empty.");
         }
@@ -195,6 +200,11 @@ namespace DSA {
 
     template <typename T>
     T& DynamicArray<T>::back() {
+        return const_cast<T&>(static_cast<const T&>(*this).back());
+    }
+
+    template <typename T>
+    const T& DynamicArray<T>::back() const {
         if (is_empty()) {
             throw std::out_of_range("Array is empty");
         }
@@ -204,6 +214,11 @@ namespace DSA {
 
     template <typename T>
     T& DynamicArray<T>::at(const std::size_t index) {
+        return const_cast<T&>(static_cast<const T&>(*this).at());
+    }
+
+    template <typename T>
+    const T& DynamicArray<T>::at(const std::size_t index) const {
         if (index < 0 || index >= m_size) {
             throw std::out_of_range("Index out of range.");
         }
@@ -213,11 +228,21 @@ namespace DSA {
 
     template <typename T>
     inline T& DynamicArray<T>::operator[](const std::size_t index) {
+        return const_cast<T&>(static_cast<const DynamicArray<T>&>(*this)[index]);
+    }
+
+    template <typename T>
+    inline const T& DynamicArray<T>::operator[](const std::size_t index) const {
         return m_buffer[index];
     }
 
     template <typename T>
     inline T* DynamicArray<T>::data() {
+        return const_cast<T&>(static_cast<const T&>(*this).data());
+    }
+
+    template <typename T>
+    inline const T* DynamicArray<T>::data() const {
         return m_buffer;
     }
 

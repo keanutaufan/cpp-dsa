@@ -8,7 +8,7 @@
 
 namespace DSA {
     template <typename T>
-    BinarySearchTree<T>::BSTNode<T>* BinarySearchTree<T>::_createNode(const T& value) {
+    BinarySearchTree<T>::BSTNode<T>* BinarySearchTree<T>::_create_node(const T& value) {
         BSTNode<T>* newNode = new BSTNode<T>();
         newNode->data = value;
         newNode->left = nullptr;
@@ -17,7 +17,7 @@ namespace DSA {
     }
 
     template <typename T>
-    int BinarySearchTree<T>::_defaultCompare(const T& value1, const T& value2) {
+    int BinarySearchTree<T>::_default_compare(const T& value1, const T& value2) {
         if (value1 < value2) {
             return -1;
         }
@@ -30,7 +30,7 @@ namespace DSA {
     }
 
     template <typename T>
-    BinarySearchTree<T>::BSTNode<T>* BinarySearchTree<T>::_getReference(BSTNode<T>* rootNode, const T& value) {
+    BinarySearchTree<T>::BSTNode<T>* BinarySearchTree<T>::_get_reference(BSTNode<T>* rootNode, const T& value) {
         if (rootNode == nullptr) {
             throw std::runtime_error("Element not found.");
         }
@@ -131,7 +131,7 @@ namespace DSA {
             }
             
             T newDeletedValue = predecessorNode->data;
-            this->_remove(predecessorNode->data, targetNode);
+            _remove(predecessorNode->data, targetNode);
             targetNode->data = newDeletedValue;
         }
     }
@@ -139,8 +139,8 @@ namespace DSA {
     template <typename T>
     void BinarySearchTree<T>::_clear(BSTNode<T>* rootNode) {
         if (rootNode != nullptr) {
-            this->_clear(rootNode->left);
-            this->_clear(rootNode->right);
+            _clear(rootNode->left);
+            _clear(rootNode->right);
             delete rootNode;
         }
     }
@@ -151,15 +151,15 @@ namespace DSA {
             return -1;
         }
         else {
-            int leftHeight = this->_height(rootNode->left);
-            int rightHeight = this->_height(rootNode->right);
+            int leftHeight = _height(rootNode->left);
+            int rightHeight = _height(rootNode->right);
             return std::max(leftHeight, rightHeight) + 1;
         }
     }
 
     template <typename T>
     BinarySearchTree<T>::BSTNode<T>* BinarySearchTree<T>::_predecessor(BSTNode<T>* rootNode, const T& value) {
-        BSTNode<T>* currentNode = this->_getReference(rootNode, value);
+        BSTNode<T>* currentNode = _get_reference(rootNode, value);
         BSTNode<T>* predecessor = nullptr;
 
         if (currentNode->left != nullptr) {
@@ -170,7 +170,7 @@ namespace DSA {
             return predecessor;
         }
         else {
-            BSTNode<T>* cursor = this->root;
+            BSTNode<T>* cursor = m_root;
             while (cursor != currentNode) {
                 if (_compare(currentNode->data, cursor->data) < 0) {
                     cursor = cursor->left;
@@ -195,7 +195,7 @@ namespace DSA {
 
     template <typename T>
     BinarySearchTree<T>::BSTNode<T>* BinarySearchTree<T>::_successor(BSTNode<T>* rootNode, const T& value) {
-        BSTNode<T>* currentNode = this->_getReference(rootNode, value);
+        BSTNode<T>* currentNode = _get_reference(rootNode, value);
         BSTNode<T>* successor = nullptr;
 
         if (currentNode->right != nullptr) {
@@ -206,7 +206,7 @@ namespace DSA {
             return successor;
         }
         else {
-            BSTNode<T>* cursor = this->root;
+            BSTNode<T>* cursor = m_root;
             while (cursor != currentNode) {
                 if (_compare(currentNode->data, cursor->data) < 0) {
                     successor = cursor;
@@ -233,46 +233,46 @@ namespace DSA {
     void BinarySearchTree<T>::_preorder(BSTNode<T>* rootNode, std::ostringstream& outstring) {
         if (rootNode != nullptr) {
             outstring << rootNode->data << " ";
-            this->_preorder(rootNode->left, outstring);
-            this->_preorder(rootNode->right, outstring);
+            _preorder(rootNode->left, outstring);
+            _preorder(rootNode->right, outstring);
         }
     }
 
     template <typename T>
     void BinarySearchTree<T>::_inorder(BSTNode<T>* rootNode, std::ostringstream& outstring) {
         if (rootNode != nullptr) {
-            this->_inorder(rootNode->left, outstring);
+            _inorder(rootNode->left, outstring);
             outstring << rootNode->data << " ";
-            this->_inorder(rootNode->right, outstring);
+            _inorder(rootNode->right, outstring);
         }
     }
 
     template <typename T>
     void BinarySearchTree<T>::_postorder(BSTNode<T>* rootNode, std::ostringstream& outstring) {
         if (rootNode != nullptr) {
-            this->_postorder(rootNode->left, outstring);
-            this->_postorder(rootNode->right, outstring);
+            _postorder(rootNode->left, outstring);
+            _postorder(rootNode->right, outstring);
             outstring << rootNode->data << " ";
         }
     }
 
     template <typename T>
     BinarySearchTree<T>::BinarySearchTree(int (*compare)(const T&, const T&)) {
-        this->root = nullptr;
-        this->_compare = compare;
-        this->BSTSize = 0;
+        m_root = nullptr;
+        _compare = compare;
+        m_size = 0;
     }
 
     template <typename T>
     void BinarySearchTree<T>::insert(const T& value) {
-        BSTNode<T> *newNode = this->_createNode(value);
+        BSTNode<T> *newNode = _create_node(value);
 
-        if (this->root == nullptr) {
-            this->root = newNode;
+        if (m_root == nullptr) {
+            m_root = newNode;
         }
         else {
-            BSTNode<T>* cursor = this->root;
-            BSTNode<T>* insertPos = this->root;
+            BSTNode<T>* cursor = m_root;
+            BSTNode<T>* insertPos = m_root;
             while (cursor != nullptr) {
                 insertPos = cursor;
                 if (_compare(value, cursor->data) <= 0) {
@@ -290,26 +290,26 @@ namespace DSA {
             }
         }
         
-        this->BSTSize++;
+        m_size++;
     }
 
     template <typename T>
     void BinarySearchTree<T>::remove(const T& value) {
-        if (this->root == nullptr) {
+        if (m_root == nullptr) {
             throw std::underflow_error("Tree is empty.");
         }
         
-        this->_remove(value, this->root);
-        this->BSTSize--;
+        _remove(value, m_root);
+        m_size--;
     }
 
     template <typename T>
     bool BinarySearchTree<T>::contains(const T& value) {
-        if (this->root == nullptr) {
+        if (m_root == nullptr) {
             return false;
         }
         
-        BSTNode<T>* cursor = this->root;
+        BSTNode<T>* cursor = m_root;
         while (cursor != nullptr) {
             if (_compare(value, cursor->data) < 0) {
                 cursor = cursor->left;
@@ -326,16 +326,16 @@ namespace DSA {
 
     template <typename T>
     const T& BinarySearchTree<T>::search(const T& value) {
-        return this->_getReference(this->root, value)->data;
+        return _get_reference(m_root, value)->data;
     }
 
     template <typename T>
     const T& BinarySearchTree<T>::min() {
-        if (this->isEmpty()) {
+        if (is_empty()) {
             throw std::out_of_range("Tree is empty.");
         }
 
-        BSTNode<T>* cursor = this->root;
+        BSTNode<T>* cursor = m_root;
         while (cursor->left != nullptr) {
             cursor = cursor->left;
         }
@@ -344,11 +344,11 @@ namespace DSA {
 
     template <typename T>
     const T& BinarySearchTree<T>::max() {
-        if (this->isEmpty()) {
+        if (is_empty()) {
             throw std::out_of_range("Tree is empty.");
         }
 
-        BSTNode<T> *cursor = this->root;
+        BSTNode<T> *cursor = m_root;
         while (cursor->right != nullptr) {
             cursor = cursor->right;
         }
@@ -357,53 +357,53 @@ namespace DSA {
 
     template <typename T>
     const T& BinarySearchTree<T>::predecessor(const T& value) {
-        return this->_predecessor(this->root, value)->data;
+        return _predecessor(m_root, value)->data;
     }
 
     template <typename T>
     const T& BinarySearchTree<T>::successor(const T& value) {
-        return this->_successor(this->root, value)->data;
+        return _successor(m_root, value)->data;
     }
 
     template <typename T>
     inline std::size_t BinarySearchTree<T>::size() {
-        return this->BSTSize;
+        return m_size;
     }
 
     template <typename T>
-    inline bool BinarySearchTree<T>::isEmpty() {
-        return this->BSTSize == 0;
+    inline bool BinarySearchTree<T>::is_empty() {
+        return m_size == 0;
     }
 
     template <typename T>
     int BinarySearchTree<T>::height() {
-        return this->_height(this->root);
+        return _height(m_root);
     }
 
     template <typename T>
     std::string BinarySearchTree<T>::preorder() {
         std::ostringstream outstring;
-        this->_preorder(this->root, outstring);
+        _preorder(m_root, outstring);
         return outstring.str();
     }
 
     template <typename T>
     std::string BinarySearchTree<T>::inorder() {
         std::ostringstream outstring;
-        this->_inorder(this->root, outstring);
+        _inorder(m_root, outstring);
         return outstring.str();
     }
 
     template <typename T>
     std::string BinarySearchTree<T>::postorder() {
         std::ostringstream outstring;
-        this->_postorder(this->root, outstring);
+        _postorder(m_root, outstring);
         return outstring.str();
     }
 
     template <typename T>
     BinarySearchTree<T>::~BinarySearchTree() {
-        this->_clear(this->root);
+        _clear(m_root);
     }
 }
 

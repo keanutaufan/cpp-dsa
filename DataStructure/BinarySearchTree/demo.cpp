@@ -12,7 +12,7 @@ int main() {
     DSA::BinarySearchTree<int> bst(compare);
     std::cout << "HEIGHT: " << bst.height() << std::endl;
     std::cout << "SIZE: " << bst.size() << std::endl;
-    std::cout << "ISEMPTY: " << bst.isEmpty() << std::endl;
+    std::cout << "ISEMPTY: " << bst.is_empty() << std::endl;
 
     
     bst.insert(10);
@@ -45,7 +45,7 @@ int main() {
     std::cout << std::endl;
     std::cout << "HEIGHT: " << bst.height() << std::endl;
     std::cout << "SIZE: " << bst.size() << std::endl;
-    std::cout << "ISEMPTY: " << bst.isEmpty() << std::endl;
+    std::cout << "ISEMPTY: " << bst.is_empty() << std::endl;
     std::cout << "MIN MAX: " << bst.min() << " " << bst.max() << std::endl;
     std::cout << std::endl;
 

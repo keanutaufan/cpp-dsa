@@ -7,7 +7,7 @@ void printList(const char* expect) {
     std::cout << "===========================" << std::endl;
     std::cout << expect << std::endl;
     std::cout << "Size: " << linkedList.size() << std::endl;
-    for (int i = 0; i < linkedList.size(); i++) {
+    for (unsigned int i = 0; i < linkedList.size(); i++) {
         std::cout << "LL[" << i << "]: " << linkedList[i] << std::endl;
     }
     std::cout << "===========================" << std::endl;

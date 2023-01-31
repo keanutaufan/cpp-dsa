@@ -51,7 +51,7 @@ Additionally, linked list may also support the following operations:
 - `insert`: Insert an item at a specific position in the list.
 - `erase`: Remove an item at a specific position in the list.
 - `size`: Get the number of items in the list.
-- `isEmpty`: Check if the list is empty.
+- `is_empty`: Check if the list is empty.
 - `at` or `operator[]`: Get the value of the item at a specific position in the list.
 
 ## Time Complexity
@@ -71,7 +71,7 @@ for both linked list and array.
 | `insert`             | $O(n)$      | $O(n)$ |
 | `erase`              | $O(n)$      | $O(n)$ |
 | `size`               | $O(1)$      | $O(1)$ |
-| `isEmpty`            | $O(1)$      | $O(1)$ |
+| `is_empty`            | $O(1)$      | $O(1)$ |
 | `at` or `operator[]` | $O(n)$      | $O(1)$ |
 
 As you can see, linked list is more efficient for insertion and deletion at the
@@ -190,10 +190,10 @@ The linked list class will be implemented as a template class, which means that 
 can store elements of any type. The linked list class will have the following
 private members:
 
-- `head` - A pointer to the first node in the list.
-- `tail` - A pointer to the last node in the list.
-- `linkedListSize` - The number of nodes in the list.
-- `_getReference` - A private method that returns a reference to the node at the
+- `m_head` - A pointer to the first node in the list.
+- `m_tail` - A pointer to the last node in the list.
+- `m_size` - The number of nodes in the list.
+- `_get_reference` - A private method that returns a reference to the node at the
   specified index. This method will be used multiple times in the public methods
   of the linked list class, so it is better to implement it as a private method
   to avoid code duplication.
@@ -205,12 +205,12 @@ The linked list class will have the following public methods:
 - `push_back` - Inserts an element at the end of the list.
 - `pop_front` - Removes the first element in the list.
 - `pop_back` - Removes the last element in the list.
-- `insertAt` - Inserts an element at the specified index.
-- `removeAt` - Removes the element at the specified index.
+- `insert_at` - Inserts an element at the specified index.
+- `remove_at` - Removes the element at the specified index.
 - `peek_front` - Returns a reference to the first element in the list.
 - `peek_back` - Returns a reference to the last element in the list.
 - `size` - Returns the number of elements in the list.
-- `isEmpty` - Returns true if the list is empty, false otherwise.
+- `is_empty` - Returns true if the list is empty, false otherwise.
 - `operator[]` - Returns a reference to the element at the specified index.
 - `~LinkedList` - The destructor of the linked list class.
 
@@ -227,8 +227,8 @@ private:
 
     LinkedListNode<T>* head;
     LinkedListNode<T>* tail;
-    std::size_t linkedListSize;
-    LinkedListNode<T>* _getReference(const std::size_t index);
+    std::size_t m_size;
+    LinkedListNode<T>* _get_reference(const std::size_t index);
 
 public:
     LinkedList();
@@ -237,14 +237,14 @@ public:
     void push_back(const T& value);
     void pop_front();
     void pop_back();
-    void insertAt(const std::size_t index, const T& value);
-    void removeAt(const std::size_t index);
+    void insert_at(const std::size_t index, const T& value);
+    void remove_at(const std::size_t index);
 
-    const T& peek_front();
-    const T& peek_back();
+    const T& peek_front() const;
+    const T& peek_back() const;
 
-    std::size_t size();
-    bool isEmpty();
+    std::size_t size() const;
+    bool is_empty() const;
 
     T& operator[](const std::size_t index);
 
@@ -254,21 +254,21 @@ public:
 
 ### Constructor
 
-The constructor of the linked list class will initialize the `head` and `tail`
-pointers to `nullptr` and the `linkedListSize` to `0`.
+The constructor of the linked list class will initialize the `m_head` and `m_tail`
+pointers to `nullptr` and the `m_size` to `0`.
 
 ```cpp
 template <typename T>
 LinkedList<T>::LinkedList() {
-    this->head = nullptr;
-    this->tail = nullptr;
-    this->linkedListSize = 0;
+    m_head = nullptr;
+    m_tail = nullptr;
+    m_size = 0;
 }
 ```
 
-### `_getReference`
+### `_get_reference`
 
-The `_getReference` method will return a reference to the node at the specified
+The `_get_reference` method will return a reference to the node at the specified
 index. First, it will check if the index is out of bounds. If it is, it will throw
 an `std::out_of_range` exception. If the index is valid, it will traverse the list
 from the head or the tail, depending on which is closer to the specified index.
@@ -278,22 +278,22 @@ pointer to the node.
 
 ```cpp
 template <typename T>
-LinkedList<T>::LinkedListNode<T>* LinkedList<T>::_getReference(const std::size_t index) {
-if (index < 0 || index >= this->linkedListSize) {
+LinkedList<T>::LinkedListNode<T>* LinkedList<T>::_get_reference(const std::size_t index) {
+if (index < 0 || index >= m_size) {
         throw std::out_of_range("Index out of range.");
     }
 
     LinkedListNode<T>* cursor = nullptr;
 
-    if (index <= this->linkedListSize/2) {
-        cursor = this->head;
+    if (index <= m_size/2) {
+        cursor = m_head;
         for (std::size_t i = 0; i < index; i++) {
             cursor = cursor->next;
         }
     }
     else {
-        cursor = this->tail;
-        for (std::size_t i = this->linkedListSize-1; i > index; i--) {
+        cursor = m_tail;
+        for (std::size_t i = m_size-1; i > index; i--) {
             cursor = cursor->prev;
         }
     }
@@ -310,11 +310,11 @@ in case the type of index is changed in the future.
 
 The `push_front` method will insert an element at the beginning of the list. First,
 it will create a new node with the specified value. Then, it will check if the list
-is empty. If it is, it will set the `head` and `tail` pointers to the new node.
-If the list is not empty, it will set the `prev` pointer of the current `head` to
-the new node, set the `next` pointer of the new node to the current `head`, and
-set the `head` pointer to the new node. Finally, it will increment the
-`linkedListSize` by 1.
+is empty. If it is, it will set the `m_head` and `m_tail` pointers to the new node.
+If the list is not empty, it will set the `prev` pointer of the current `m_head` to
+the new node, set the `next` pointer of the new node to the current `m_head`, and
+set the `m_head` pointer to the new node. Finally, it will increment the
+`m_size` by 1.
 
 ```cpp
 template <typename T>
@@ -324,17 +324,17 @@ void LinkedList<T>::push_front(const T& value) {
     newElement->next = nullptr;
     newElement->prev = nullptr;
 
-    if (this->isEmpty()) {
-        this->head = newElement;
-        this->tail = newElement;
+    if (is_empty()) {
+        m_head = newElement;
+        m_tail = newElement;
     }
     else {
-        newElement->next = this->head;
-        this->head->prev = newElement;
-        this->head = newElement;
+        newElement->next = m_head;
+        m_head->prev = newElement;
+        m_head = newElement;
     }
 
-    this->linkedListSize++;
+    m_size++;
 }
 ```
 
@@ -342,11 +342,11 @@ void LinkedList<T>::push_front(const T& value) {
 
 The `push_back` method will insert an element at the end of the list. First, it
 will create a new node with the specified value. Then, it will check if the list
-is empty. If it is, it will set the `head` and `tail` pointers to the new node.
-If the list is not empty, it will set the `next` pointer of the current `tail` to
-the new node, set the `prev` pointer of the new node to the current `tail`, and
-set the `tail` pointer to the new node. Finally, it will increment the
-`linkedListSize` by 1.
+is empty. If it is, it will set the `m_head` and `m_tail` pointers to the new node.
+If the list is not empty, it will set the `next` pointer of the current `m_tail` to
+the new node, set the `prev` pointer of the new node to the current `m_tail`, and
+set the `m_tail` pointer to the new node. Finally, it will increment the
+`m_size` by 1.
 
 ```cpp
 template <typename T>
@@ -356,17 +356,17 @@ void LinkedList<T>::push_back(const T& value) {
     newElement->next = nullptr;
     newElement->prev = nullptr;
 
-    if (this->isEmpty()) {
-        this->head = newElement;
-        this->tail = newElement;
+    if (is_empty()) {
+        m_head = newElement;
+        m_tail = newElement;
     }
     else {
-        newElement->prev = this->tail;
-        this->tail->next = newElement;
-        this->tail = newElement;
+        newElement->prev = m_tail;
+        m_tail->next = newElement;
+        m_tail = newElement;
     }
 
-    this->linkedListSize++;
+    m_size++;
 }
 ```
 
@@ -374,26 +374,26 @@ void LinkedList<T>::push_back(const T& value) {
 
 The `pop_front` method will remove the first element of the list. First, it will
 check if the list is empty. If it is, it will throw an `std::underflow_error`
-exception. If the list is not empty, it will set the `head` pointer to the next
-node in the list. Then, it will delete the previous `head` node. Finally, it will
-decrement the `linkedListSize` by 1. If the list is now empty, it will set the
-`tail` pointer to `nullptr`.
+exception. If the list is not empty, it will set the `m_head` pointer to the next
+node in the list. Then, it will delete the previous `m_head` node. Finally, it will
+decrement the `m_size` by 1. If the list is now empty, it will set the
+`m_tail` pointer to `nullptr`.
 
 ```cpp
 template <typename T>
 void LinkedList<T>::pop_front() {
-    if (this->isEmpty()) {
+    if (is_empty()) {
         throw std::underflow_error("List is empty.");
     }
 
-    LinkedListNode<T>* newHead = this->head->next;
-    delete this->head;
-    this->head = newHead;
-    this->head->prev = nullptr;
-    this->linkedListSize--;
+    LinkedListNode<T>* newHead = m_head->next;
+    delete m_head;
+    m_head = newHead;
+    m_head->prev = nullptr;
+    m_size--;
 
-    if (this->isEmpty()) {
-        this->tail = nullptr;
+    if (is_empty()) {
+        m_tail = nullptr;
     }
 }
 ```
@@ -402,33 +402,33 @@ void LinkedList<T>::pop_front() {
 
 The `pop_back` method will remove the last element of the list. First, it will
 check if the list is empty. If it is, it will throw an `std::underflow_error`
-exception. If the list is not empty, it will set the `tail` pointer to the previous
-node in the list. Then, it will delete the previous `tail` node. Finally, it will
-decrement the `linkedListSize` by 1. If the list is now empty, it will set the
-`head` pointer to `nullptr`.
+exception. If the list is not empty, it will set the `m_tail` pointer to the previous
+node in the list. Then, it will delete the previous `m_tail` node. Finally, it will
+decrement the `m_size` by 1. If the list is now empty, it will set the
+`m_head` pointer to `nullptr`.
 
 ```cpp
 template <typename T>
 void LinkedList<T>::pop_back() {
-    if (this->isEmpty()) {
+    if (is_empty()) {
         throw std::underflow_error("List is empty.");
     }
 
-    LinkedListNode<T>* newTail = this->tail->prev;
-    delete this->tail;
-    this->tail = newTail;
-    this->tail->next = nullptr;
-    this->linkedListSize--;
+    LinkedListNode<T>* newTail = m_tail->prev;
+    delete m_tail;
+    m_tail = newTail;
+    m_tail->next = nullptr;
+    m_size--;
 
-    if (this->isEmpty()) {
-        this->head = nullptr;
+    if (is_empty()) {
+        m_head = nullptr;
     }
 }
 ```
 
-### `insertAt`
+### `insert_at`
 
-The `insertAt` method will insert an element at the specified index. First, it
+The `insert_at` method will insert an element at the specified index. First, it
 will check if the index is 0. If it is, it will call the `push_front` method.
 If the index is equal to the size of the list, it will call the `push_back`
 method. If the index is neither 0 nor the size of the list, it will get a
@@ -438,19 +438,19 @@ node at the specified index, set the `prev` pointer of the new node to the node
 before the node at the specified index, set the `next` pointer of the node before
 the node at the specified index to the new node, and set the `prev` pointer of
 the node at the specified index to the new node. Finally, it will increment the
-`linkedListSize` by 1.
+`m_size` by 1.
 
 ```cpp
 template <typename T>
-void LinkedList<T>::insertAt(const std::size_t index, const T& value) {
+void LinkedList<T>::insert_at(const std::size_t index, const T& value) {
     if (index == 0) {
-        this->push_front(value);
+        push_front(value);
     }
-    else if (index == this->linkedListSize) {
-        this->push_back(value);
+    else if (index == m_size) {
+        push_back(value);
     }
     else {
-        LinkedListNode<T>* proceedingElement = this->_getReference(index);
+        LinkedListNode<T>* proceedingElement = _get_reference(index);
         LinkedListNode<T>* preceedingElement = proceedingElement->prev;
 
         LinkedListNode<T>* newElement = new LinkedListNode<T>();
@@ -461,18 +461,18 @@ void LinkedList<T>::insertAt(const std::size_t index, const T& value) {
         preceedingElement->next = newElement;
         proceedingElement->prev = newElement;
 
-        this->linkedListSize++;
+        m_size++;
     }
 }
 ```
 
-**Note:** The `insertAt` method does not check if the index is out of bounds as
-the `_getReference` method will throw an `std::out_of_range` exception if the
+**Note:** The `insert_at` method does not check if the index is out of bounds as
+the `_get_reference` method will throw an `std::out_of_range` exception if the
 index is out of bounds.
 
-### `removeAt`
+### `remove_at`
 
-The `removeAt` method will remove the element at the specified index. First, it
+The `remove_at` method will remove the element at the specified index. First, it
 will check if the index is 0. If it is, it will call the `pop_front` method. If
 the index is equal to the size of the list minus 1, it will call the `pop_back`
 method. If the index is neither 0 nor the size of the list minus 1, it will get a
@@ -480,20 +480,20 @@ reference to the node at the specified index. Then, it will set the `next` point
 of the node before the node at the specified index to the node after the node at
 the specified index, set the `prev` pointer of the node after the node at the
 specified index to the node before the node at the specified index, and delete
-the node at the specified index. Finally, it will decrement the `linkedListSize`
+the node at the specified index. Finally, it will decrement the `m_size`
 by 1.
 
 ```cpp
 template <typename T>
-void LinkedList<T>::removeAt(const std::size_t index) {
+void LinkedList<T>::remove_at(const std::size_t index) {
     if (index == 0) {
-        this->pop_front();
+        pop_front();
     }
-    else if (index == this->linkedListSize - 1) {
-        this->pop_back();
+    else if (index == m_size - 1) {
+        pop_back();
     }
     else {
-        LinkedListNode<T>* elementToRemove = this->_getReference(index);
+        LinkedListNode<T>* elementToRemove = _get_reference(index);
         LinkedListNode<T>* preceedingElement = elementToRemove->prev;
         LinkedListNode<T>* proceedingElement = elementToRemove->next;
 
@@ -501,13 +501,13 @@ void LinkedList<T>::removeAt(const std::size_t index) {
         proceedingElement->prev = preceedingElement;
         delete elementToRemove;
 
-        this->linkedListSize--;
+        m_size--;
     }
 }
 ```
 
-**Note:** The `removeAt` method does not check if the index is out of bounds as
-the `_getReference` method will throw an `std::out_of_range` exception if the
+**Note:** The `remove_at` method does not check if the index is out of bounds as
+the `_get_reference` method will throw an `std::out_of_range` exception if the
 index is out of bounds.
 
 ### `peek_front`
@@ -516,8 +516,8 @@ The `peek_front` method will return the data of the head of the list.
 
 ```cpp
 template <typename T>
-inline const T& LinkedList<T>::peek_front() {
-    return this->head->data;
+inline const T& LinkedList<T>::peek_front() const {
+    return m_head->data;
 }
 ```
 
@@ -527,8 +527,8 @@ The `peek_back` method will return the data of the tail of the list.
 
 ```cpp
 template <typename T>
-inline const T& LinkedList<T>::peek_back() {
-    return this->tail->data;
+inline const T& LinkedList<T>::peek_back() const {
+    return m_tail->data;
 }
 ```
 
@@ -538,38 +538,38 @@ The `size` method will return the size of the list.
 
 ```cpp
 template <typename T>
-inline std::size_t LinkedList<T>::size() {
-    return this->linkedListSize;
+inline std::size_t LinkedList<T>::size() const {
+    return m_size;
 }
 ```
 
-### `isEmpty`
+### `is_empty`
 
-The `isEmpty` method will return `true` if the list is empty and `false` if the
+The `is_empty` method will return `true` if the list is empty and `false` if the
 list is not empty.
 
 ```cpp
 template <typename T>
-inline bool LinkedList<T>::isEmpty() {
-    return this->linkedListSize == 0;
+inline bool LinkedList<T>::is_empty() const {
+    return m_size == 0;
 }
 ```
 
 ### `operator[]`
 
-The `operator[]` method will call the `_getReference` method to get a reference
+The `operator[]` method will call the `_get_reference` method to get a reference
 to the node at the specified index and return the data of the node pointed to by
 the reference. 
 
 ```cpp
 template <typename T>
 T& LinkedList<T>::operator[](const std::size_t index) {
-    return this->_getReference(index)->data;
+    return _get_reference(index)->data;
 }
 ```
 
 **Note:** The `operator[]` method does not check if the index is out of bounds as
-the `_getReference` method will throw an `std::out_of_range` exception if the
+the `_get_reference` method will throw an `std::out_of_range` exception if the
 index is out of bounds.
 
 ### Destructor
@@ -582,17 +582,17 @@ stored on the heap and the user has no way of accessing the nodes as it is
 private to the class. The destructor will iterate through the deque and delete
 each node. It will do this by getting a reference to the head of the list, setting
 the head of the list to the next node, deleting the node that was previously the
-head of the list, and decrementing the `linkedListSize` by 1. This will continue
+head of the list, and decrementing the `m_size` by 1. This will continue
 until the list is empty.
 
 ```cpp
 template <typename T>
 LinkedList<T>::~LinkedList() {
-    while (!this->isEmpty()) {
-        LinkedListNode<T>* headElement = this->head;
-        this->head = this->head->next;
+    while (!is_empty()) {
+        LinkedListNode<T>* headElement = m_head;
+        m_head = m_head->next;
         delete headElement;
-        this->linkedListSize--;
+        m_size--;
     }
 }
 ```

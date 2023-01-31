@@ -21,14 +21,14 @@ namespace DSA {
 
         void _remove(const T& value, BSTNode<T>* rootNode);
         void _clear(BSTNode<T>* rootNode);
-        int _height(BSTNode<T>* rootNode);
+        int _height(BSTNode<T>* rootNode) const;
 
         BSTNode<T>* _predecessor(BSTNode<T>* rootNode, const T& value);
         BSTNode<T>* _successor(BSTNode<T>* rootNode, const T& value);
 
-        void _preorder(BSTNode<T>* rootNode, std::ostringstream& outstring);
-        void _inorder(BSTNode<T>* rootNode, std::ostringstream& outstring);
-        void _postorder(BSTNode<T>* rootNode, std::ostringstream& outstring);
+        void _preorder(BSTNode<T>* rootNode, std::ostringstream& outstring) const;
+        void _inorder(BSTNode<T>* rootNode, std::ostringstream& outstring) const;
+        void _postorder(BSTNode<T>* rootNode, std::ostringstream& outstring) const;
 
         BSTNode<T>* m_root;
         std::size_t m_size;
@@ -40,22 +40,22 @@ namespace DSA {
         void insert(const T& value);
         void remove(const T& value);
 
-        bool contains(const T& value);
+        bool contains(const T& value) const;
         const T& search(const T& value);
 
-        const T& min();
-        const T& max();
+        const T& min() const;
+        const T& max() const;
 
         const T& predecessor(const T& value);
         const T& successor(const T& value);
 
-        std::size_t size();
-        bool is_empty();
-        int height();
+        std::size_t size() const;
+        bool is_empty() const;
+        int height() const;
         
-        std::string preorder();
-        std::string inorder();
-        std::string postorder();
+        std::string preorder() const;
+        std::string inorder() const;
+        std::string postorder() const;
 
         ~BinarySearchTree();
     };

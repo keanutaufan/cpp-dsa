@@ -146,7 +146,7 @@ namespace DSA {
     }
 
     template <typename T>
-    int BinarySearchTree<T>::_height(BSTNode<T>* rootNode) {
+    int BinarySearchTree<T>::_height(BSTNode<T>* rootNode) const {
         if (rootNode == nullptr) {
             return -1;
         }
@@ -230,7 +230,7 @@ namespace DSA {
     }
 
     template <typename T>
-    void BinarySearchTree<T>::_preorder(BSTNode<T>* rootNode, std::ostringstream& outstring) {
+    void BinarySearchTree<T>::_preorder(BSTNode<T>* rootNode, std::ostringstream& outstring) const {
         if (rootNode != nullptr) {
             outstring << rootNode->data << " ";
             _preorder(rootNode->left, outstring);
@@ -239,7 +239,7 @@ namespace DSA {
     }
 
     template <typename T>
-    void BinarySearchTree<T>::_inorder(BSTNode<T>* rootNode, std::ostringstream& outstring) {
+    void BinarySearchTree<T>::_inorder(BSTNode<T>* rootNode, std::ostringstream& outstring) const {
         if (rootNode != nullptr) {
             _inorder(rootNode->left, outstring);
             outstring << rootNode->data << " ";
@@ -248,7 +248,7 @@ namespace DSA {
     }
 
     template <typename T>
-    void BinarySearchTree<T>::_postorder(BSTNode<T>* rootNode, std::ostringstream& outstring) {
+    void BinarySearchTree<T>::_postorder(BSTNode<T>* rootNode, std::ostringstream& outstring) const {
         if (rootNode != nullptr) {
             _postorder(rootNode->left, outstring);
             _postorder(rootNode->right, outstring);
@@ -304,7 +304,7 @@ namespace DSA {
     }
 
     template <typename T>
-    bool BinarySearchTree<T>::contains(const T& value) {
+    bool BinarySearchTree<T>::contains(const T& value) const {
         if (m_root == nullptr) {
             return false;
         }
@@ -330,7 +330,7 @@ namespace DSA {
     }
 
     template <typename T>
-    const T& BinarySearchTree<T>::min() {
+    const T& BinarySearchTree<T>::min() const {
         if (is_empty()) {
             throw std::out_of_range("Tree is empty.");
         }
@@ -343,7 +343,7 @@ namespace DSA {
     }
 
     template <typename T>
-    const T& BinarySearchTree<T>::max() {
+    const T& BinarySearchTree<T>::max() const {
         if (is_empty()) {
             throw std::out_of_range("Tree is empty.");
         }
@@ -366,36 +366,36 @@ namespace DSA {
     }
 
     template <typename T>
-    inline std::size_t BinarySearchTree<T>::size() {
+    inline std::size_t BinarySearchTree<T>::size() const {
         return m_size;
     }
 
     template <typename T>
-    inline bool BinarySearchTree<T>::is_empty() {
+    inline bool BinarySearchTree<T>::is_empty() const {
         return m_size == 0;
     }
 
     template <typename T>
-    int BinarySearchTree<T>::height() {
+    int BinarySearchTree<T>::height() const {
         return _height(m_root);
     }
 
     template <typename T>
-    std::string BinarySearchTree<T>::preorder() {
+    std::string BinarySearchTree<T>::preorder() const {
         std::ostringstream outstring;
         _preorder(m_root, outstring);
         return outstring.str();
     }
 
     template <typename T>
-    std::string BinarySearchTree<T>::inorder() {
+    std::string BinarySearchTree<T>::inorder() const {
         std::ostringstream outstring;
         _inorder(m_root, outstring);
         return outstring.str();
     }
 
     template <typename T>
-    std::string BinarySearchTree<T>::postorder() {
+    std::string BinarySearchTree<T>::postorder() const {
         std::ostringstream outstring;
         _postorder(m_root, outstring);
         return outstring.str();

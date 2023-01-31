@@ -15,10 +15,10 @@ namespace DSA {
             LinkedListNode<U>* prev;
         };
 
-        LinkedListNode<T>* head;
-        LinkedListNode<T>* tail;
-        std::size_t linkedListSize;
-        LinkedListNode<T>* _getReference(const std::size_t index);
+        LinkedListNode<T>* m_head;
+        LinkedListNode<T>* m_tail;
+        std::size_t m_size;
+        LinkedListNode<T>* _get_reference(const std::size_t index);
 
     public:
         LinkedList();
@@ -27,14 +27,14 @@ namespace DSA {
         void push_back(const T& value);
         void pop_front();
         void pop_back();
-        void insertAt(const std::size_t index, const T& value);
-        void removeAt(const std::size_t index);
+        void insert_at(const std::size_t index, const T& value);
+        void remove_at(const std::size_t index);
 
         const T& peek_front();
         const T& peek_back();
 
         std::size_t size();
-        bool isEmpty();
+        bool is_empty();
 
         T& operator[](const std::size_t index);
 

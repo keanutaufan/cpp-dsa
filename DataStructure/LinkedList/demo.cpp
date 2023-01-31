@@ -25,16 +25,16 @@ int main() {
     linkedList.pop_back();
     printList("EXPECT: 15");
 
-    linkedList.insertAt(0, 10);
+    linkedList.insert_at(0, 10);
     printList("EXPECT: 10, 15");
 
-    linkedList.insertAt(1, 17);
+    linkedList.insert_at(1, 17);
     printList("EXPECT: 10, 17, 15");
 
-    linkedList.insertAt(3, 19);
+    linkedList.insert_at(3, 19);
     printList("EXPECT: 10, 17, 15, 19");
 
-    linkedList.removeAt(1);
+    linkedList.remove_at(1);
     printList("EXPECT: 10, 15, 19");
 
     std::cout << "FRONT AND BACK PEEK" << std::endl;

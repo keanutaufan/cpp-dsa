@@ -161,22 +161,22 @@ namespace DSA {
     }
 
     template <typename T>
-    inline const T& LinkedList<T>::peek_front() {
+    inline const T& LinkedList<T>::peek_front() const {
         return m_head->data;
     }
 
     template <typename T>
-    inline const T& LinkedList<T>::peek_back() {
+    inline const T& LinkedList<T>::peek_back() const{
         return m_tail->data;
     }
 
     template <typename T>
-    inline std::size_t LinkedList<T>::size() {
+    inline std::size_t LinkedList<T>::size() const {
         return m_size;
     }
 
     template <typename T>
-    inline bool LinkedList<T>::is_empty() {
+    inline bool LinkedList<T>::is_empty() const {
         return m_size == 0;
     }
 

@@ -30,11 +30,11 @@ namespace DSA {
         void insert_at(const std::size_t index, const T& value);
         void remove_at(const std::size_t index);
 
-        const T& peek_front();
-        const T& peek_back();
+        const T& peek_front() const;
+        const T& peek_back() const;
 
-        std::size_t size();
-        bool is_empty();
+        std::size_t size() const;
+        bool is_empty() const;
 
         T& operator[](const std::size_t index);
 

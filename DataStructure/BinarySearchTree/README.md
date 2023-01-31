@@ -189,7 +189,7 @@ Some other operations that are commonly supported by a BST are:
 - `traverse` - Traverse the tree in a specific order.
 - `height` - Find the height of the tree.
 - `size` - Find the number of nodes in the tree.
-- `isEmpty` - Check if the tree is empty.
+- `is_empty` - Check if the tree is empty.
 
 Some implementations of a more advanced BST may also support the balance
 check operation, which checks if the tree is balanced, and can even rebalance
@@ -216,7 +216,7 @@ $O(n)$ time in the worst case when tree is skewed.
 | `traverse`    | $O(n)$      | $O(n)$ |
 | `height`      | $O(\log n)$ | $O(n)$ |
 | `size`        | $O(1)$      | $O(1)$ |
-| `isEmpty`     | $O(1)$      | $O(1)$ |
+| `is_empty`    | $O(1)$      | $O(1)$ |
 
 As you can see, the time complexity of BST operations can be very different
 depending on the shape of the tree. Because most algorithms require traversing
@@ -328,13 +328,13 @@ The BST will be implemented as a template class, which means that it can
 store elements of any type. The BST class will have the following private
 members:
 
-- `root` - The pointer to the root node of the tree.
-- `BSTSize` - The number of nodes in the tree.
+- `m_root` - The pointer to the root node of the tree.
+- `m_size` - The number of nodes in the tree.
 - `_compare` - The comparison function that will be used to compare
   two values.
-- `_createNode` - A private method that creates a new node.
-- `_defaultCompare` - A private method that compares two values using the
-- `_getReference` - A private method that finds the reference to a node
+- `_create_node` - A private method that creates a new node.
+- `_default_compare` - A private method that compares two values using the
+- `_get_reference` - A private method that finds the reference to a node
   in a subtree.
   default comparison operator.
 - `_remove` - A private method that removes a node from a subtree.
@@ -363,7 +363,7 @@ will have the following public methods:
 - `predecessor` - Find the inorder predecessor of a value in the tree.
 - `successor` - Find the inorder successor of a value in the tree.
 - `size` - Get the number of nodes in the tree.
-- `isEmpty` - Check if the tree is empty.
+- `is_empty` - Check if the tree is empty.
 - `height` - Get the height of the tree.
 - `preorder` - Traverse the tree in preorder.
 - `inorder` - Traverse the tree in inorder.
@@ -383,47 +383,47 @@ private:
         BSTNode<U>* right;
     };
 
-    BSTNode<T>* _createNode(const T& value);
-    static int _defaultCompare(const T& value1, const T& value2);
-    BSTNode<T>* _getReference(BSTNode<T>* rootNode, const T& value);
+    BSTNode<T>* _create_node(const T& value);
+    static int _default_compare(const T& value1, const T& value2);
+    BSTNode<T>* _get_reference(BSTNode<T>* rootNode, const T& value);
 
     void _remove(const T& value, BSTNode<T>* rootNode);
     void _clear(BSTNode<T>* rootNode);
-    int _height(BSTNode<T>* rootNode);
+    int _height(BSTNode<T>* rootNode) const;
 
     BSTNode<T>* _predecessor(BSTNode<T>* rootNode, const T& value);
     BSTNode<T>* _successor(BSTNode<T>* rootNode, const T& value);
 
-    void _preorder(BSTNode<T>* rootNode, std::ostringstream& outstring);
-    void _inorder(BSTNode<T>* rootNode, std::ostringstream& outstring);
-    void _postorder(BSTNode<T>* rootNode, std::ostringstream& outstring);
+    void _preorder(BSTNode<T>* rootNode, std::ostringstream& outstring) const;
+    void _inorder(BSTNode<T>* rootNode, std::ostringstream& outstring) const;
+    void _postorder(BSTNode<T>* rootNode, std::ostringstream& outstring) const;
 
     BSTNode<T>* root;
-    std::size_t BSTSize;
+    std::size_t m_size;
     int (*_compare)(const T& value1, const T& value2);
 
 public:
-    BinarySearchTree(int (*compare)(const T&, const T&) = _defaultCompare);
+    BinarySearchTree(int (*compare)(const T&, const T&) = _default_compare);
     
     void insert(const T& value);
     void remove(const T& value);
 
-    bool contains(const T& value);
+    bool contains(const T& value) const;
     const T& search(const T& value);
 
-    const T& min();
-    const T& max();
+    const T& min() const;
+    const T& max() const;
 
     const T& predecessor(const T& value);
     const T& successor(const T& value);
 
-    std::size_t size();
-    bool isEmpty();
-    int height();
+    std::size_t size() const;
+    bool is_empty() const;
+    int height() const;
     
-    std::string preorder();
-    std::string inorder();
-    std::string postorder();
+    std::string preorder() const;
+    std::string inorder() const;
+    std::string postorder() const;
 
     ~BinarySearchTree();
 };
@@ -434,29 +434,29 @@ public:
 The constructor for the BST class will take a pointer to a function that
 takes two parameters of type `T` and returns an `int` as a parameter. This
 function will be used to compare two values of type `T`. The default
-comparison function will be `_defaultCompare`, which will use the default
-comparison operator. The constructor also initializes the `root` member to
-`nullptr`, the `BSTSize` member to `0`.
+comparison function will be `_default_compare`, which will use the default
+comparison operator. The constructor also initializes the `m_root` member to
+`nullptr`, the `m_size` member to `0`.
 
 ```cpp
 template <typename T>
 BinarySearchTree<T>::BinarySearchTree(int (*compare)(const T&, const T&)) {
-    this->root = nullptr;
-    this->_compare = compare;
-    this->BSTSize = 0;
+    m_root = nullptr;
+    _compare = compare;
+    m_size = 0;
 }
 ```
 
-### `_createNode`
+### `_create_node`
 
-The `_createNode` method creates a new node and returns a pointer to the new
+The `_create_node` method creates a new node and returns a pointer to the new
 node. This operation will be used extensively in many of the other methods.
 The node will be created using the `new` operator. The data member of the
 node will be set to the value passed to the method. Both the left and right
 children will point to a null pointer. 
 ```cpp
 template <typename T>
-BinarySearchTree<T>::BSTNode<T>* BinarySearchTree<T>::_createNode(const T& value) {
+BinarySearchTree<T>::BSTNode<T>* BinarySearchTree<T>::_create_node(const T& value) {
     BSTNode<T>* newNode = new BSTNode<T>();
     newNode->data = value;
     newNode->left = nullptr;
@@ -465,16 +465,16 @@ BinarySearchTree<T>::BSTNode<T>* BinarySearchTree<T>::_createNode(const T& value
 }
 ```
 
-### `_defaultCompare`
+### `_default_compare`
 
 The `_compare` member is a pointer to a function that takes two
 parameters of type `T` and returns an `int`. This function will be used to
 compare two values of type `T`. The default comparison function will be
-`_defaultCompare`, which will use the default comparison operator.
+`_default_compare`, which will use the default comparison operator.
 
 ```cpp
 template <typename T>
-int BinarySearchTree<T>::_defaultCompare(const T& value1, const T& value2) {
+int BinarySearchTree<T>::_default_compare(const T& value1, const T& value2) {
     if (value1 < value2) {
         return -1;
     }
@@ -487,9 +487,9 @@ int BinarySearchTree<T>::_defaultCompare(const T& value1, const T& value2) {
 }
 ```
 
-### `_getReference`
+### `_get_reference`
 
-The `_getReference` method returns a pointer to the node containing the value
+The `_get_reference` method returns a pointer to the node containing the value
 from a subtree. The method will first check whether the node pointed to by the
 root node is a null pointer, if it is, it will throw an exception. The method
 will iterate through the tree until it finds the node containing the value or
@@ -507,7 +507,7 @@ method will return a pointer to the node pointed to by the cursor.
 
 ```cpp
 template <typename T>
-BinarySearchTree<T>::BSTNode<T>* BinarySearchTree<T>::_getReference(BSTNode<T>* rootNode, const T& value) {
+BinarySearchTree<T>::BSTNode<T>* BinarySearchTree<T>::_get_reference(BSTNode<T>* rootNode, const T& value) {
     if (rootNode == nullptr) {
         throw std::runtime_error("Element not found.");
     }
@@ -637,7 +637,7 @@ template <typename T>
             }
             
             T newDeletedValue = predecessorNode->data;
-            this->_remove(predecessorNode->data, targetNode);
+            _remove(predecessorNode->data, targetNode);
             targetNode->data = newDeletedValue;
         }
     }
@@ -655,8 +655,8 @@ it deletes the nodes.
 template <typename T>
 void BinarySearchTree<T>::_clear(BSTNode<T>* rootNode) {
     if (rootNode != nullptr) {
-        this->_clear(rootNode->left);
-        this->_clear(rootNode->right);
+        _clear(rootNode->left);
+        _clear(rootNode->right);
         delete rootNode;
     }
 }
@@ -672,13 +672,13 @@ sources.
 
 ```cpp
 template <typename T>
-int BinarySearchTree<T>::_height(BSTNode<T>* rootNode) {
+int BinarySearchTree<T>::_height(BSTNode<T>* rootNode) const {
     if (rootNode == nullptr) {
         return -1;
     }
     else {
-        int leftHeight = this->_height(rootNode->left);
-        int rightHeight = this->_height(rootNode->right);
+        int leftHeight = _height(rootNode->left);
+        int rightHeight = _height(rootNode->right);
         return std::max(leftHeight, rightHeight) + 1;
     }
 }
@@ -713,7 +713,7 @@ the given value in the given subtree.
 ```cpp
 template <typename T>
 BinarySearchTree<T>::BSTNode<T>* BinarySearchTree<T>::_predecessor(BSTNode<T>* rootNode, const T& value) {
-    BSTNode<T>* currentNode = this->_getReference(rootNode, value);
+    BSTNode<T>* currentNode = _get_reference(rootNode, value);
     BSTNode<T>* predecessor = nullptr;
 
     if (currentNode->left != nullptr) {
@@ -724,7 +724,7 @@ BinarySearchTree<T>::BSTNode<T>* BinarySearchTree<T>::_predecessor(BSTNode<T>* r
         return predecessor;
     }
     else {
-        BSTNode<T>* cursor = this->root;
+        BSTNode<T>* cursor = m_root;
         while (cursor != currentNode) {
             if (_compare(currentNode->data, cursor->data) < 0) {
                 cursor = cursor->left;
@@ -771,7 +771,7 @@ the given value in the given subtree.
 ```cpp
 template <typename T>
 BinarySearchTree<T>::BSTNode<T>* BinarySearchTree<T>::_successor(BSTNode<T>* rootNode, const T& value) {
-    BSTNode<T>* currentNode = this->_getReference(rootNode, value);
+    BSTNode<T>* currentNode = _get_reference(rootNode, value);
     BSTNode<T>* successor = nullptr;
 
     if (currentNode->right != nullptr) {
@@ -782,7 +782,7 @@ BinarySearchTree<T>::BSTNode<T>* BinarySearchTree<T>::_successor(BSTNode<T>* roo
         return successor;
     }
     else {
-        BSTNode<T>* cursor = this->root;
+        BSTNode<T>* cursor = m_root;
         while (cursor != currentNode) {
             if (_compare(currentNode->data, cursor->data) < 0) {
                 successor = cursor;
@@ -816,11 +816,11 @@ implemented recursively by calling itself on the left and right subtrees.
 
 ```cpp
 template <typename T>
-void BinarySearchTree<T>::_preorder(BSTNode<T>* rootNode, std::ostringstream& outstring) {
+void BinarySearchTree<T>::_preorder(BSTNode<T>* rootNode, std::ostringstream& outstring) const {
     if (rootNode != nullptr) {
         outstring << rootNode->data << " ";
-        this->_preorder(rootNode->left, outstring);
-        this->_preorder(rootNode->right, outstring);
+        _preorder(rootNode->left, outstring);
+        _preorder(rootNode->right, outstring);
     }
 }
 ```
@@ -840,11 +840,11 @@ implemented recursively by calling itself on the left and right subtrees.
 
 ```cpp
 template <typename T>
-void BinarySearchTree<T>::_inorder(BSTNode<T>* rootNode, std::ostringstream& outstring) {
+void BinarySearchTree<T>::_inorder(BSTNode<T>* rootNode, std::ostringstream& outstring) const {
     if (rootNode != nullptr) {
-        this->_inorder(rootNode->left, outstring);
+        _inorder(rootNode->left, outstring);
         outstring << rootNode->data << " ";
-        this->_inorder(rootNode->right, outstring);
+        _inorder(rootNode->right, outstring);
     }
 }
 ```
@@ -859,10 +859,10 @@ implemented recursively by calling itself on the left and right subtrees.
 
 ```cpp
 template <typename T>
-void BinarySearchTree<T>::_postorder(BSTNode<T>* rootNode, std::ostringstream& outstring) {
+void BinarySearchTree<T>::_postorder(BSTNode<T>* rootNode, std::ostringstream& outstring) const {
     if (rootNode != nullptr) {
-        this->_postorder(rootNode->left, outstring);
-        this->_postorder(rootNode->right, outstring);
+        _postorder(rootNode->left, outstring);
+        _postorder(rootNode->right, outstring);
         outstring << rootNode->data << " ";
     }
 }
@@ -880,14 +880,14 @@ new node.
 ```cpp
 template <typename T>
 void BinarySearchTree<T>::insert(const T& value) {
-    BSTNode<T> *newNode = this->_createNode(value);
+    BSTNode<T> *newNode = _create_node(value);
 
-    if (this->root == nullptr) {
-        this->root = newNode;
+    if (m_root == nullptr) {
+        m_root = newNode;
     }
     else {
-        BSTNode<T>* cursor = this->root;
-        BSTNode<T>* insertPos = this->root;
+        BSTNode<T>* cursor = m_root;
+        BSTNode<T>* insertPos = m_root;
         while (cursor != nullptr) {
             insertPos = cursor;
             if (_compare(value, cursor->data) <= 0) {
@@ -905,7 +905,7 @@ void BinarySearchTree<T>::insert(const T& value) {
         }
     }
     
-    this->BSTSize++;
+    m_size++;
 }
 ```
 
@@ -921,12 +921,12 @@ node as the argument. The tree size will be decremented by 1 after.
 ```cpp
 template <typename T>
 void BinarySearchTree<T>::remove(const T& value) {
-    if (this->root == nullptr) {
+    if (m_root == nullptr) {
         throw std::underflow_error("Tree is empty.");
     }
     
-    this->_remove(value, this->root);
-    this->BSTSize--;
+    _remove(value, m_root);
+    m_size--;
 }
 ```
 
@@ -940,12 +940,12 @@ the method will return false.
 
 ```cpp
 template <typename T>
-bool BinarySearchTree<T>::contains(const T& value) {
-    if (this->root == nullptr) {
+bool BinarySearchTree<T>::contains(const T& value) const {
+    if (m_root == nullptr) {
         return false;
     }
     
-    BSTNode<T>* cursor = this->root;
+    BSTNode<T>* cursor = m_root;
     while (cursor != nullptr) {
         if (_compare(value, cursor->data) < 0) {
             cursor = cursor->left;
@@ -964,19 +964,19 @@ bool BinarySearchTree<T>::contains(const T& value) {
 ### `search`
 
 The `search` method searches for a value in the tree. The method will call
-the `_getReference` method to search for the value in the tree. The method
+the `_get_reference` method to search for the value in the tree. The method
 will then return the value of the node that was found.
 
 ```cpp
 template <typename T>
 const T& BinarySearchTree<T>::search(const T& value) {
-    return this->_getReference(this->root, value)->data;
+    return _get_reference(m_root, value)->data;
 }
 ```
 
-**Note:** The `_getReference` will throw an exception if the value is not
+**Note:** The `_get_reference` will throw an exception if the value is not
 found in the tree, so we do not need to check whether the value is in the tree
-before calling the `_getReference` method.
+before calling the `_get_reference` method.
 
 ### `min`
 
@@ -988,12 +988,12 @@ method will traverse the tree until it reaches the leftmost node.
 
 ```cpp
 template <typename T>
-const T& BinarySearchTree<T>::min() {
-    if (this->isEmpty()) {
+const T& BinarySearchTree<T>::min() const {
+    if (is_empty()) {
         throw std::out_of_range("Tree is empty.");
     }
 
-    BSTNode<T>* cursor = this->root;
+    BSTNode<T>* cursor = m_root;
     while (cursor->left != nullptr) {
         cursor = cursor->left;
     }
@@ -1011,12 +1011,12 @@ method will traverse the tree until it reaches the rightmost node.
 
 ```cpp
 template <typename T>
-const T& BinarySearchTree<T>::max() {
-    if (this->isEmpty()) {
+const T& BinarySearchTree<T>::max() const {
+    if (is_empty()) {
         throw std::out_of_range("Tree is empty.");
     }
 
-    BSTNode<T> *cursor = this->root;
+    BSTNode<T> *cursor = m_root;
     while (cursor->right != nullptr) {
         cursor = cursor->right;
     }
@@ -1029,7 +1029,7 @@ const T& BinarySearchTree<T>::max() {
 The `successor` method returns the node with the next largest value in the
 tree. The method will first check whether the tree is empty, if it is, it will
 throw an exception. If the tree is not empty, the method will call the
-`_getReference` method to get a pointer to the node containing the value. If
+`_get_reference` method to get a pointer to the node containing the value. If
 the value is not found, the method will throw an exception. If the value is
 found, the method will check whether the node has a right child. If it does,
 the method will traverse the right subtree until it reaches the leftmost node
@@ -1040,11 +1040,11 @@ parent.
 ```cpp
 template <typename T>
 BSTNode<T>* BinarySearchTree<T>::successor(const T& value) {
-  if (this->root == nullptr) {
+  if (m_root == nullptr) {
     throw std::runtime_error("Tree is empty.");
   }
   else {
-    BSTNode<T>* node = this->_getReference(this->root, value);
+    BSTNode<T>* node = _get_reference(m_root, value);
     if (_compare(value, node->data) != 0) {
       throw std::runtime_error("Element not found.");
     }
@@ -1083,7 +1083,7 @@ not have a predecessor, so we do not need to double check it here.
 ```cpp
 template <typename T>
 const T& BinarySearchTree<T>::predecessor(const T& value) {
-    return this->_predecessor(this->root, value)->data;
+    return _predecessor(m_root, value)->data;
 }
 ```
 
@@ -1097,31 +1097,31 @@ not have a successor, so we do not need to double check it here.
 ```cpp
 template <typename T>
 const T& BinarySearchTree<T>::successor(const T& value) {
-    return this->_successor(this->root, value)->data;
+    return _successor(m_root, value)->data;
 }
 ```
 
 ### `size`
 
 The `size` method returns the number of nodes in the tree. The method will
-simply return the `BSTSize` member variable. 
+simply return the `m_size` member variable. 
 
 ```cpp
 template <typename T>
-inline std::size_t BinarySearchTree<T>::size() {
-    return this->BSTSize;
+inline std::size_t BinarySearchTree<T>::size() const {
+    return m_size;
 }
 ```
 
-### `isEmpty`
+### `is_empty`
 
-The `isEmpty` method returns whether the tree is empty. The method will simply
-return whether the `BSTSize` member variable is equal to zero.
+The `is_empty` method returns whether the tree is empty. The method will simply
+return whether the `m_size` member variable is equal to zero.
 
 ```cpp
 template <typename T>
-inline bool BinarySearchTree<T>::isEmpty() {
-    return this->BSTSize == 0;
+inline bool BinarySearchTree<T>::is_empty() const {
+    return m_size == 0;
 }
 ```
 
@@ -1134,8 +1134,8 @@ node.
 
 ```cpp
 template <typename T>
-int BinarySearchTree<T>::height() {
-    return this->_height(this->root);
+int BinarySearchTree<T>::height() const {
+    return _height(m_root);
 }
 ```
 
@@ -1148,9 +1148,9 @@ traverse the tree in preorder. The `preorder` method will simply call the
 
 ```cpp
 template <typename T>
-std::string BinarySearchTree<T>::preorder() {
+std::string BinarySearchTree<T>::preorder() const {
     std::ostringstream outstring;
-    this->_preorder(this->root, outstring);
+    _preorder(m_root, outstring);
     return outstring.str();
 }
 ```
@@ -1164,9 +1164,9 @@ traverse the tree in inorder. The `inorder` method will simply call the
 
 ```cpp
 template <typename T>
-std::string BinarySearchTree<T>::inorder() {
+std::string BinarySearchTree<T>::inorder() const {
     std::ostringstream outstring;
-    this->_inorder(this->root, outstring);
+    _inorder(m_root, outstring);
     return outstring.str();
 }
 ```
@@ -1180,9 +1180,9 @@ call the `_postorder` method on the root node.
 
 ```cpp
 template <typename T>
-std::string BinarySearchTree<T>::postorder() {
+std::string BinarySearchTree<T>::postorder() const {
     std::ostringstream outstring;
-    this->_postorder(this->root, outstring);
+    _postorder(m_root, outstring);
     return outstring.str();
 }
 ```
@@ -1199,7 +1199,7 @@ will call the `_clear` method on the root node.
 ```cpp
 template <typename T>
 BinarySearchTree<T>::~BinarySearchTree() {
-    this->_clear(this->root);
+    _clear(m_root);
 }
 ```
 

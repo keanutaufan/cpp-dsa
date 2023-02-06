@@ -37,6 +37,14 @@ int main() {
     linkedList.remove_at(1);
     printList("EXPECT: 10, 15, 19");
 
+    while(!linkedList.is_empty()) {
+        linkedList.pop_front();
+    }
+    linkedList.push_back(10);
+    linkedList.push_back(11);
+    linkedList.push_back(12);
+    printList("EXPECT: 10, 11, 12");
+
     std::cout << "FRONT AND BACK PEEK" << std::endl;
     std::cout << linkedList.peek_front() << " " << linkedList.peek_back() << std::endl;  
     std::cout << "Finished!" << std::endl;

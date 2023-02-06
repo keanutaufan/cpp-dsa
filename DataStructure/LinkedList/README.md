@@ -389,11 +389,13 @@ void LinkedList<T>::pop_front() {
     LinkedListNode<T>* newHead = m_head->next;
     delete m_head;
     m_head = newHead;
-    m_head->prev = nullptr;
     m_size--;
 
     if (is_empty()) {
         m_tail = nullptr;
+    }
+    else {
+        m_head->prev = nullptr;
     }
 }
 ```
@@ -417,11 +419,13 @@ void LinkedList<T>::pop_back() {
     LinkedListNode<T>* newTail = m_tail->prev;
     delete m_tail;
     m_tail = newTail;
-    m_tail->next = nullptr;
     m_size--;
 
     if (is_empty()) {
         m_head = nullptr;
+    }
+    else {
+        m_tail->next = nullptr;
     }
 }
 ```

@@ -14,13 +14,13 @@ so more people can learn from my journey.
 
 ### Data Structures
 
-- [Dynamic Array](DataStructure/DynamicArray)
-- [Stack](DataStructure/Stack)
-- [Queue](DataStructure/Queue)
-- [Deque](DataStructure/Deque)
-- [Linked List](DataStructure/LinkedList)
-- [Binary Search Tree (with fair explanation about binary tree)](DataStructure/BinarySearchTree)
-- [Priority Queue (with fair explanation about binary heap)](DataStructure/PriorityQueue)
+- [Dynamic Array](legacy_DataStructure/DynamicArray)
+- [Stack](legacy_DataStructure/Stack)
+- [Queue](legacy_DataStructure/Queue)
+- [Deque](legacy_DataStructure/Deque)
+- [Linked List](legacy_DataStructure/LinkedList)
+- [Binary Search Tree (with fair explanation about binary tree)](legacy_DataStructure/BinarySearchTree)
+- [Priority Queue (with fair explanation about binary heap)](legacy_DataStructure/PriorityQueue)
 
 more to come...
 
